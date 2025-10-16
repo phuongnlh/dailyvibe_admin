@@ -14,7 +14,7 @@ const PublicAdminRoute = ({ children }: PublicRouteProps) => {
   }
 
   if (admin) {
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

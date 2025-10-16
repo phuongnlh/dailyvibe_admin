@@ -84,8 +84,7 @@ const ModerationManagement: React.FC = () => {
       id: 3,
       type: "auto_flagged",
       contentType: "post",
-      content:
-        "Buy crypto now! 1000% guaranteed returns! Contact me for amazing deals!",
+      content: "Buy crypto now! 1000% guaranteed returns! Contact me for amazing deals!",
       author: {
         id: 303,
         name: "Spam Bot",
@@ -228,11 +227,7 @@ const ModerationManagement: React.FC = () => {
   });
 
   const handleSelectItem = (itemId: number) => {
-    setSelectedItems((prev) =>
-      prev.includes(itemId)
-        ? prev.filter((id) => id !== itemId)
-        : [...prev, itemId]
-    );
+    setSelectedItems((prev) => (prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]));
   };
 
   const handleSelectAll = () => {
@@ -308,23 +303,15 @@ const ModerationManagement: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {value}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
             <div className="flex items-center mt-2">
               {isPositive ? (
                 <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
               ) : (
                 <TrendingUp className="w-4 h-4 text-red-500 mr-1 transform rotate-180" />
               )}
-              <span
-                className={`text-sm font-medium ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
                 {isPositive ? "+" : ""}
                 {change}%
               </span>
@@ -340,13 +327,7 @@ const ModerationManagement: React.FC = () => {
   };
 
   return (
-    <AdminLayout
-      title="Moderation Management"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Moderation Management" },
-      ]}
-    >
+    <AdminLayout title="Moderation Management">
       <div className="space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -356,18 +337,12 @@ const ModerationManagement: React.FC = () => {
         </div>
 
         {/* Moderation Dashboard */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           {/* Header */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Content Moderation Queue
-                </h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Content Moderation Queue</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Review flagged content and take moderation actions
                 </p>
@@ -393,9 +368,7 @@ const ModerationManagement: React.FC = () => {
                 {/* Filter */}
                 <button className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Filter
-                  </span>
+                  <span className="text-gray-700 dark:text-gray-300">Filter</span>
                 </button>
               </div>
             </div>
@@ -477,22 +450,16 @@ const ModerationManagement: React.FC = () => {
                         <div className="flex items-center space-x-2 mb-2">
                           <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
                             {getTypeIcon(item.type)}
-                            <span className="text-sm font-medium capitalize">
-                              {item.type.replace("_", " ")}
-                            </span>
+                            <span className="text-sm font-medium capitalize">{item.type.replace("_", " ")}</span>
                           </div>
 
                           <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
                             {getContentIcon(item.contentType)}
-                            <span className="text-sm capitalize">
-                              {item.contentType}
-                            </span>
+                            <span className="text-sm capitalize">{item.contentType}</span>
                           </div>
 
                           <span
-                            className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                              item.status
-                            )}`}
+                            className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status)}`}
                           >
                             {item.status.replace("_", " ")}
                           </span>
@@ -504,9 +471,7 @@ const ModerationManagement: React.FC = () => {
                           )}
                         </div>
 
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                          {item.reason}
-                        </h3>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{item.reason}</h3>
 
                         <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
                           <span>Flagged by {item.flaggedBy}</span>
@@ -531,19 +496,11 @@ const ModerationManagement: React.FC = () => {
                       />
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
-                          <h4 className="font-medium text-gray-900 dark:text-white">
-                            {item.author.name}
-                          </h4>
-                          <span className="text-sm text-gray-500">
-                            {item.author.username}
-                          </span>
+                          <h4 className="font-medium text-gray-900 dark:text-white">{item.author.name}</h4>
+                          <span className="text-sm text-gray-500">{item.author.username}</span>
                         </div>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-2">
-                          {item.content}
-                        </p>
-                        <div className="text-xs text-gray-500">
-                          From: {item.post.title}
-                        </div>
+                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-2">{item.content}</p>
+                        <div className="text-xs text-gray-500">From: {item.post.title}</div>
                       </div>
                     </div>
                   </div>
@@ -551,9 +508,7 @@ const ModerationManagement: React.FC = () => {
                   {/* AI Tags */}
                   {item.aiTags && item.aiTags.length > 0 && (
                     <div className="mb-4">
-                      <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                        AI Detection Tags
-                      </h5>
+                      <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-2">AI Detection Tags</h5>
                       <div className="flex flex-wrap gap-2">
                         {item.aiTags.map((tag, index) => (
                           <span
@@ -603,16 +558,13 @@ const ModerationManagement: React.FC = () => {
           {/* Pagination */}
           <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg px-6 py-4 border border-gray-200 dark:border-gray-700">
             <div className="text-sm text-gray-700 dark:text-gray-300">
-              Showing 1 to {filteredItems.length} of {moderationQueue.length}{" "}
-              results
+              Showing 1 to {filteredItems.length} of {moderationQueue.length} results
             </div>
             <div className="flex items-center space-x-2">
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 Previous
               </button>
-              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">
-                1
-              </button>
+              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">1</button>
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 2
               </button>

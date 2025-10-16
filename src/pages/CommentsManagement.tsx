@@ -33,8 +33,7 @@ const CommentsManagement: React.FC = () => {
   const comments = [
     {
       id: 1,
-      content:
-        "Great post! Really helpful information about social media trends.",
+      content: "Great post! Really helpful information about social media trends.",
       author: {
         id: 101,
         name: "John Doe",
@@ -63,8 +62,7 @@ const CommentsManagement: React.FC = () => {
     },
     {
       id: 2,
-      content:
-        "This is completely wrong! You have no idea what you're talking about. Absolute garbage content.",
+      content: "This is completely wrong! You have no idea what you're talking about. Absolute garbage content.",
       author: {
         id: 102,
         name: "Angry User",
@@ -122,8 +120,7 @@ const CommentsManagement: React.FC = () => {
     },
     {
       id: 4,
-      content:
-        "I disagree with some points but appreciate the discussion. Here's my perspective...",
+      content: "I disagree with some points but appreciate the discussion. Here's my perspective...",
       author: {
         id: 104,
         name: "Mike Johnson",
@@ -181,8 +178,7 @@ const CommentsManagement: React.FC = () => {
     },
     {
       id: 6,
-      content:
-        "Could you provide more sources for this claim? I'd like to read more about it.",
+      content: "Could you provide more sources for this claim? I'd like to read more about it.",
       author: {
         id: 106,
         name: "Sarah Wilson",
@@ -283,9 +279,7 @@ const CommentsManagement: React.FC = () => {
 
   const handleSelectComment = (commentId: number) => {
     setSelectedComments((prev) =>
-      prev.includes(commentId)
-        ? prev.filter((id) => id !== commentId)
-        : [...prev, commentId]
+      prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
     );
   };
 
@@ -343,23 +337,15 @@ const CommentsManagement: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {value}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
             <div className="flex items-center mt-2">
               {isPositive ? (
                 <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
               ) : (
                 <TrendingUp className="w-4 h-4 text-red-500 mr-1 transform rotate-180" />
               )}
-              <span
-                className={`text-sm font-medium ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
                 {isPositive ? "+" : ""}
                 {change}%
               </span>
@@ -375,13 +361,7 @@ const CommentsManagement: React.FC = () => {
   };
 
   return (
-    <AdminLayout
-      title="Comments Management"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Comments Management" },
-      ]}
-    >
+    <AdminLayout title="Comments Management">
       <div className="space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -391,18 +371,12 @@ const CommentsManagement: React.FC = () => {
         </div>
 
         {/* Comments Management */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           {/* Header */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Comments Moderation
-                </h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Comments Moderation</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Review and moderate user comments across all posts
                 </p>
@@ -422,9 +396,7 @@ const CommentsManagement: React.FC = () => {
                 {/* Filter */}
                 <button className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Filter
-                  </span>
+                  <span className="text-gray-700 dark:text-gray-300">Filter</span>
                 </button>
               </div>
             </div>
@@ -512,20 +484,10 @@ const CommentsManagement: React.FC = () => {
 
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
-                          <h4 className="font-semibold text-gray-900 dark:text-white">
-                            {comment.author.name}
-                          </h4>
-                          <span className="text-sm text-gray-500">
-                            {comment.author.username}
-                          </span>
-                          {comment.author.verified && (
-                            <CheckCircle className="w-4 h-4 text-blue-500" />
-                          )}
-                          {comment.isEdited && (
-                            <span className="text-xs text-gray-400">
-                              (edited)
-                            </span>
-                          )}
+                          <h4 className="font-semibold text-gray-900 dark:text-white">{comment.author.name}</h4>
+                          <span className="text-sm text-gray-500">{comment.author.username}</span>
+                          {comment.author.verified && <CheckCircle className="w-4 h-4 text-blue-500" />}
+                          {comment.isEdited && <span className="text-xs text-gray-400">(edited)</span>}
                         </div>
 
                         <div className="flex items-center space-x-2 text-sm text-gray-500">
@@ -539,9 +501,7 @@ const CommentsManagement: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       {/* Status Badge */}
                       <span
-                        className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                          comment.status
-                        )}`}
+                        className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(comment.status)}`}
                       >
                         {comment.status}
                       </span>
@@ -564,9 +524,7 @@ const CommentsManagement: React.FC = () => {
 
                   {/* Comment Content */}
                   <div className="ml-16 mb-4">
-                    <p className="text-gray-900 dark:text-white leading-relaxed">
-                      {comment.content}
-                    </p>
+                    <p className="text-gray-900 dark:text-white leading-relaxed">{comment.content}</p>
                   </div>
 
                   {/* Comment Stats */}
@@ -632,36 +590,20 @@ const CommentsManagement: React.FC = () => {
                     >
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="font-medium text-gray-600 dark:text-gray-400">
-                            User ID:
-                          </span>
-                          <span className="ml-2 text-gray-900 dark:text-white">
-                            {comment.author.id}
-                          </span>
+                          <span className="font-medium text-gray-600 dark:text-gray-400">User ID:</span>
+                          <span className="ml-2 text-gray-900 dark:text-white">{comment.author.id}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600 dark:text-gray-400">
-                            IP Address:
-                          </span>
-                          <span className="ml-2 text-gray-900 dark:text-white">
-                            {comment.ipAddress}
-                          </span>
+                          <span className="font-medium text-gray-600 dark:text-gray-400">IP Address:</span>
+                          <span className="ml-2 text-gray-900 dark:text-white">{comment.ipAddress}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600 dark:text-gray-400">
-                            Language:
-                          </span>
-                          <span className="ml-2 text-gray-900 dark:text-white">
-                            {comment.language.toUpperCase()}
-                          </span>
+                          <span className="font-medium text-gray-600 dark:text-gray-400">Language:</span>
+                          <span className="ml-2 text-gray-900 dark:text-white">{comment.language.toUpperCase()}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600 dark:text-gray-400">
-                            Post ID:
-                          </span>
-                          <span className="ml-2 text-gray-900 dark:text-white">
-                            {comment.post.id}
-                          </span>
+                          <span className="font-medium text-gray-600 dark:text-gray-400">Post ID:</span>
+                          <span className="ml-2 text-gray-900 dark:text-white">{comment.post.id}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -670,11 +612,7 @@ const CommentsManagement: React.FC = () => {
                   {/* Toggle Details */}
                   <div className="ml-16 mt-3">
                     <button
-                      onClick={() =>
-                        setExpandedComment(
-                          expandedComment === comment.id ? null : comment.id
-                        )
-                      }
+                      onClick={() => setExpandedComment(expandedComment === comment.id ? null : comment.id)}
                       className="text-sm text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 flex items-center space-x-1"
                     >
                       {expandedComment === comment.id ? (
@@ -698,16 +636,13 @@ const CommentsManagement: React.FC = () => {
           {/* Pagination */}
           <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg px-6 py-4 border border-gray-200 dark:border-gray-700">
             <div className="text-sm text-gray-700 dark:text-gray-300">
-              Showing 1 to {filteredComments.length} of {comments.length}{" "}
-              results
+              Showing 1 to {filteredComments.length} of {comments.length} results
             </div>
             <div className="flex items-center space-x-2">
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 Previous
               </button>
-              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">
-                1
-              </button>
+              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">1</button>
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 2
               </button>

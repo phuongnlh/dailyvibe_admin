@@ -191,11 +191,7 @@ const MediaManagement: React.FC = () => {
   });
 
   const handleSelectMedia = (mediaId: number) => {
-    setSelectedMedia((prev) =>
-      prev.includes(mediaId)
-        ? prev.filter((id) => id !== mediaId)
-        : [...prev, mediaId]
-    );
+    setSelectedMedia((prev) => (prev.includes(mediaId) ? prev.filter((id) => id !== mediaId) : [...prev, mediaId]));
   };
 
   const handleSelectAll = () => {
@@ -237,23 +233,15 @@ const MediaManagement: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {value}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
             <div className="flex items-center mt-2">
               {isPositive ? (
                 <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
               ) : (
                 <TrendingUp className="w-4 h-4 text-red-500 mr-1 transform rotate-180" />
               )}
-              <span
-                className={`text-sm font-medium ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
                 {isPositive ? "+" : ""}
                 {change}%
               </span>
@@ -308,11 +296,7 @@ const MediaManagement: React.FC = () => {
           <div className="aspect-square relative">
             {file.type === "video" ? (
               <div className="relative w-full h-full">
-                <img
-                  src={file.thumbnail}
-                  alt={file.name}
-                  className="w-full h-full object-cover"
-                />
+                <img src={file.thumbnail} alt={file.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <Play className="w-8 h-8 text-white" />
                 </div>
@@ -321,11 +305,7 @@ const MediaManagement: React.FC = () => {
                 </div>
               </div>
             ) : file.type === "image" ? (
-              <img
-                src={file.thumbnail}
-                alt={file.name}
-                className="w-full h-full object-cover"
-              />
+              <img src={file.thumbnail} alt={file.name} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                 <FileText className="w-12 h-12 text-gray-400" />
@@ -335,17 +315,13 @@ const MediaManagement: React.FC = () => {
 
           {/* File Info */}
           <div className="p-3">
-            <h3 className="font-medium text-gray-900 dark:text-white text-sm truncate mb-1">
-              {file.name}
-            </h3>
+            <h3 className="font-medium text-gray-900 dark:text-white text-sm truncate mb-1">{file.name}</h3>
             <div className="flex items-center justify-between text-xs text-gray-500">
               <span>{file.size}</span>
               <span>{file.dimensions}</span>
             </div>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-xs text-gray-500">
-                {file.downloads} downloads
-              </span>
+              <span className="text-xs text-gray-500">{file.downloads} downloads</span>
               <div className="flex space-x-1">
                 <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                   <Eye className="w-3 h-3 text-gray-400" />
@@ -373,10 +349,7 @@ const MediaManagement: React.FC = () => {
               <th className="px-6 py-3 text-left">
                 <input
                   type="checkbox"
-                  checked={
-                    selectedMedia.length === filteredMedia.length &&
-                    filteredMedia.length > 0
-                  }
+                  checked={selectedMedia.length === filteredMedia.length && filteredMedia.length > 0}
                   onChange={handleSelectAll}
                   className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                 />
@@ -409,10 +382,7 @@ const MediaManagement: React.FC = () => {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredMedia.map((file) => (
-              <tr
-                key={file.id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
+              <tr key={file.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="px-6 py-4">
                   <input
                     type="checkbox"
@@ -426,21 +396,13 @@ const MediaManagement: React.FC = () => {
                     <div className="flex-shrink-0 w-10 h-10">
                       {file.type === "video" ? (
                         <div className="relative">
-                          <img
-                            src={file.thumbnail}
-                            alt={file.name}
-                            className="w-10 h-10 rounded-lg object-cover"
-                          />
+                          <img src={file.thumbnail} alt={file.name} className="w-10 h-10 rounded-lg object-cover" />
                           <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
                             <Play className="w-3 h-3 text-white" />
                           </div>
                         </div>
                       ) : file.type === "image" ? (
-                        <img
-                          src={file.thumbnail}
-                          alt={file.name}
-                          className="w-10 h-10 rounded-lg object-cover"
-                        />
+                        <img src={file.thumbnail} alt={file.name} className="w-10 h-10 rounded-lg object-cover" />
                       ) : (
                         <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                           <FileText className="w-5 h-5 text-gray-400" />
@@ -448,9 +410,7 @@ const MediaManagement: React.FC = () => {
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {file.name}
-                      </p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{file.name}</p>
                       <p className="text-xs text-gray-500">{file.dimensions}</p>
                     </div>
                   </div>
@@ -458,17 +418,11 @@ const MediaManagement: React.FC = () => {
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-2">
                     {getFileIcon(file.type)}
-                    <span className="text-sm text-gray-900 dark:text-white capitalize">
-                      {file.type}
-                    </span>
+                    <span className="text-sm text-gray-900 dark:text-white capitalize">{file.type}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                  {file.size}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                  {file.uploadedBy}
-                </td>
+                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{file.size}</td>
+                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{file.uploadedBy}</td>
                 <td className="px-6 py-4">
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -484,12 +438,8 @@ const MediaManagement: React.FC = () => {
                     {file.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                  {file.downloads}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                  {formatDate(file.uploadedAt)}
-                </td>
+                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{file.downloads}</td>
+                <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{formatDate(file.uploadedAt)}</td>
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-2">
                     <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
@@ -515,13 +465,7 @@ const MediaManagement: React.FC = () => {
   );
 
   return (
-    <AdminLayout
-      title="Media Management"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Media Management" },
-      ]}
-    >
+    <AdminLayout title="Media Management">
       <div className="space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -531,21 +475,13 @@ const MediaManagement: React.FC = () => {
         </div>
 
         {/* Media Management */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           {/* Header */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Media Library
-                </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Manage uploaded media files and content
-                </p>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Media Library</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage uploaded media files and content</p>
               </div>
 
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
@@ -592,9 +528,7 @@ const MediaManagement: React.FC = () => {
                 {/* Filter */}
                 <button className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Filter
-                  </span>
+                  <span className="text-gray-700 dark:text-gray-300">Filter</span>
                 </button>
               </div>
             </div>
@@ -664,9 +598,7 @@ const MediaManagement: React.FC = () => {
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 Previous
               </button>
-              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">
-                1
-              </button>
+              <button className="px-3 py-2 text-sm bg-purple-600 text-white rounded-lg">1</button>
               <button className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                 2
               </button>

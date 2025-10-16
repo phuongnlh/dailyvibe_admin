@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { TokenService } from "../api/tokenManager";
 import api from "../api/axios";
 
@@ -25,19 +18,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       let token = TokenService.getAccessToken();
 
-      if (!token) {
+      if (token) {
+        const meRes = await api.get("/me");
+        setAdmin(meRes.data);
+        return;
+      }
+
+      try {
         const res = await api.post("/refresh", {}, { withCredentials: true });
         const newToken = res.data.accessToken;
 
         TokenService.setAccessToken(newToken);
         const meRes = await api.get("/me");
         setAdmin(meRes.data);
-      }
-
-      if (token) {
-        const meRes = await api.get("/me");
-        setAdmin(meRes.data);
-        return;
+      } catch (refreshErr) {
+        // ❌ Nếu lỗi => cookie không có hoặc hết hạn
+        console.warn("No refresh token or expired", refreshErr);
+        setAdmin(null);
       }
     } catch (err) {
       console.error("Auth initialization error", err);
@@ -69,11 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await api.post(
-        "/login",
-        { email, password },
-        { withCredentials: true }
-      );
+      const res = await api.post("/login", { email, password }, { withCredentials: true });
 
       TokenService.setAccessToken(res.data.accessToken);
 
@@ -112,7 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context)
-    throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };

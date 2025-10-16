@@ -1,23 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { AppProvider } from "./contexts/AppContext";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PublicAdminRoute from "./router/PublicAdminRoute";
-import AdminLogin from "./pages/AdminLogin";
-import PrivateAdminRoute from "./router/PrivateAdminRoute";
-import Dashboard from "./pages/Home.admin";
-import Analytics from "./pages/Analytics";
-import UsersManagement from "./pages/UsersManagement";
-import PostsManagement from "./pages/PostsManagement";
-import MediaManagement from "./pages/MediaManagement";
-import CommentsManagement from "./pages/CommentsManagement";
-import ReportsManagement from "./pages/ReportsManagement";
-import ModerationManagement from "./pages/ModerationManagement";
-import VerificationManagement from "./pages/VerificationManagement";
-import AdminSettings from "./pages/AdminSettings";
 import LoadingScreen from "./components/Load/LoadingScreen";
+import { AppProvider } from "./contexts/AppContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import AdminLogin from "./pages/AdminLogin";
+import AdminSettings from "./pages/AdminSettings";
+import AdsManagement from "./pages/AdsManagement";
+import Analytics from "./pages/Analytics";
+import CommentsManagement from "./pages/CommentsManagement";
+import GroupManagement from "./pages/GroupManagement";
+import Dashboard from "./pages/Home.admin";
+import PostsManagement from "./pages/PostsManagement";
+import ReportsManagement from "./pages/ReportsManagement";
+import UsersManagement from "./pages/UsersManagement";
+import PrivateAdminRoute from "./router/PrivateAdminRoute";
+import PublicAdminRoute from "./router/PublicAdminRoute";
 
 function AppContent() {
   return (
@@ -73,14 +72,6 @@ function AppContent() {
             }
           />
           <Route
-            path="/media"
-            element={
-              <PrivateAdminRoute>
-                <MediaManagement />
-              </PrivateAdminRoute>
-            }
-          />
-          <Route
             path="/comments"
             element={
               <PrivateAdminRoute>
@@ -99,22 +90,21 @@ function AppContent() {
             }
           />
           <Route
-            path="/moderation"
+            path="/groups"
             element={
               <PrivateAdminRoute>
-                <ModerationManagement />
+                <GroupManagement />
               </PrivateAdminRoute>
             }
           />
           <Route
-            path="/verification"
+            path="/ads"
             element={
               <PrivateAdminRoute>
-                <VerificationManagement />
+                <AdsManagement />
               </PrivateAdminRoute>
             }
           />
-
           {/* Settings */}
           <Route
             path="/settings"
@@ -144,9 +134,7 @@ function App() {
 
   return (
     <AppProvider>
-      <ThemeProvider>
-        {loading ? <LoadingScreen isFading={fade} /> : <AppContent />}
-      </ThemeProvider>
+      <ThemeProvider>{loading ? <LoadingScreen isFading={fade} /> : <AppContent />}</ThemeProvider>
     </AppProvider>
   );
 }

@@ -115,31 +115,24 @@ const ReportsManagement: React.FC = () => {
           {
             title: "Total Reports",
             value: overview.totalReports?.toString() || "0",
-            change: 8.5, // This would come from API comparison
             icon: Flag,
             color: "bg-gradient-to-r from-blue-500 to-blue-600",
           },
           {
             title: "Pending Review",
             value: overview.pendingReports?.toString() || "0",
-            change: -12.3,
             icon: Clock,
             color: "bg-gradient-to-r from-orange-500 to-orange-600",
           },
           {
             title: "High Priority",
-            value:
-              data.reportTypeStats
-                ?.filter((s: any) => s.priority === "high")
-                ?.length?.toString() || "0",
-            change: 15.2,
+            value: data.reportTypeStats?.filter((s: any) => s.priority === "high")?.length?.toString() || "0",
             icon: AlertTriangle,
             color: "bg-gradient-to-r from-red-500 to-red-600",
           },
           {
             title: "Resolved Today",
             value: overview.resolvedReports?.toString() || "0",
-            change: 25.8,
             icon: CheckCircle,
             color: "bg-gradient-to-r from-green-500 to-green-600",
           },
@@ -151,10 +144,7 @@ const ReportsManagement: React.FC = () => {
   };
 
   // Handle report status update
-  const handleStatusUpdate = async (
-    reportId: string,
-    data: UpdateReportStatusData
-  ) => {
+  const handleStatusUpdate = async (reportId: string, data: UpdateReportStatusData) => {
     try {
       setActionLoading(reportId);
       const response = await updateReportStatus(reportId, data);
@@ -169,11 +159,7 @@ const ReportsManagement: React.FC = () => {
   };
 
   // Handle resolve report
-  const handleResolveReport = async (
-    reportId: string,
-    resolution: string,
-    actionTaken?: string
-  ) => {
+  const handleResolveReport = async (reportId: string, resolution: string, actionTaken?: string) => {
     try {
       setActionLoading(reportId);
       const data: ResolveReportData = {
@@ -192,9 +178,7 @@ const ReportsManagement: React.FC = () => {
   };
 
   // Handle bulk actions
-  const handleBulkAction = async (
-    action: "investigate" | "resolve" | "reject"
-  ) => {
+  const handleBulkAction = async (action: "investigate" | "resolve" | "reject") => {
     if (selectedReports.length === 0) return;
 
     try {
@@ -281,9 +265,7 @@ const ReportsManagement: React.FC = () => {
 
   const handleSelectReport = (reportId: string) => {
     setSelectedReports((prev) =>
-      prev.includes(reportId)
-        ? prev.filter((id) => id !== reportId)
-        : [...prev, reportId]
+      prev.includes(reportId) ? prev.filter((id) => id !== reportId) : [...prev, reportId]
     );
   };
 
@@ -364,9 +346,7 @@ const ReportsManagement: React.FC = () => {
     }
   };
 
-  const StatCard = ({ title, value, change, icon: Icon, color }: any) => {
-    const isPositive = change >= 0;
-
+  const StatCard = ({ title, value, icon: Icon, color }: any) => {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -375,28 +355,8 @@ const ReportsManagement: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {value}
-            </p>
-            <div className="flex items-center mt-2">
-              {isPositive ? (
-                <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-              ) : (
-                <TrendingUp className="w-4 h-4 text-red-500 mr-1 transform rotate-180" />
-              )}
-              <span
-                className={`text-sm font-medium ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {isPositive ? "+" : ""}
-                {change}%
-              </span>
-              <span className="text-sm text-gray-500 ml-1">vs last week</span>
-            </div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
           </div>
           <div className={`p-3 rounded-2xl ${color}`}>
             <Icon className="w-8 h-8 text-white" />
@@ -407,13 +367,7 @@ const ReportsManagement: React.FC = () => {
   };
 
   return (
-    <AdminLayout
-      title="Reports Management"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Reports Management" },
-      ]}
-    >
+    <AdminLayout title="Reports Management">
       <div className="space-y-6">
         {/* Error Message */}
         {error && (
@@ -437,9 +391,7 @@ const ReportsManagement: React.FC = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats
-            ? stats.map((stat: any, index: number) => (
-                <StatCard key={index} {...stat} />
-              ))
+            ? stats.map((stat: any, index: number) => <StatCard key={index} {...stat} />)
             : // Loading skeleton
               Array.from({ length: 4 }).map((_, index) => (
                 <div
@@ -459,18 +411,12 @@ const ReportsManagement: React.FC = () => {
         </div>
 
         {/* Reports Management */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           {/* Header */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  User Reports & Violations
-                </h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">User Reports & Violations</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Review and investigate user reports and content violations
                 </p>
@@ -488,14 +434,6 @@ const ReportsManagement: React.FC = () => {
                     className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
-
-                {/* Filter */}
-                <button className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Filter
-                  </span>
-                </button>
               </div>
             </div>
 
@@ -604,9 +542,7 @@ const ReportsManagement: React.FC = () => {
               // Empty state
               <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center">
                 <Flag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  No reports found
-                </h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No reports found</h3>
                 <p className="text-gray-500 dark:text-gray-400">
                   {searchQuery
                     ? `No reports match your search for "${searchQuery}"`
@@ -664,28 +600,19 @@ const ReportsManagement: React.FC = () => {
                             )}
                           </div>
 
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                            {report.reason}
-                          </h3>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{report.reason}</h3>
 
                           <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
                             <h4 className="font-medium text-gray-900 dark:text-white">
-                              Reported by{" "}
-                              {report.reportedBy?.fullName || "Unknown User"}
+                              Reported by {report.reportedBy?.fullName || "Unknown User"}
                             </h4>
-                            <span className="text-sm text-gray-500">
-                              @{report.reportedBy?.username || "unknown"}
-                            </span>
+                            <span className="text-sm text-gray-500">@{report.reportedBy?.username || "unknown"}</span>
                             <span>•</span>
                             <span>{formatDate(report.createdAt)}</span>
                             {report.assignedTo && (
                               <>
                                 <span>•</span>
-                                <span>
-                                  Assigned to{" "}
-                                  {report.assignedTo.username ||
-                                    report.assignedTo.name}
-                                </span>
+                                <span>Assigned to {report.assignedTo.username || report.assignedTo.name}</span>
                               </>
                             )}
                           </div>
@@ -701,14 +628,8 @@ const ReportsManagement: React.FC = () => {
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4">
                       <div className="flex items-start space-x-3">
                         <img
-                          src={
-                            report.reportedUser?.avatar_url ||
-                            "/default-avatar.png"
-                          }
-                          alt={
-                            report.reportedUser?.fullName ||
-                            report.reportedUser?.username
-                          }
+                          src={report.reportedUser?.avatar_url || "/default-avatar.png"}
+                          alt={report.reportedUser?.fullName || report.reportedUser?.username}
                           className="w-8 h-8 rounded-full object-cover"
                         />
                         <div className="flex-1">
@@ -716,22 +637,18 @@ const ReportsManagement: React.FC = () => {
                             <h4 className="font-medium text-gray-900 dark:text-white">
                               {report.reportedUser?.fullName || "Unknown User"}
                             </h4>
-                            <span className="text-sm text-gray-500">
-                              @{report.reportedUser?.username || "unknown"}
-                            </span>
+                            <span className="text-sm text-gray-500">@{report.reportedUser?.username || "unknown"}</span>
                             <div className="flex items-center space-x-1 text-gray-500">
                               {getContentIcon("post")}
                               <span className="text-xs capitalize">Post</span>
                             </div>
                           </div>
                           <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                            {report.reportedPost?.content ||
-                              "Content not available"}
+                            {report.reportedPost?.content || "Content not available"}
                           </p>
                           <div className="flex items-center space-x-2 mt-2">
                             <span className="text-xs text-gray-500">
-                              Post ID:{" "}
-                              {report.reportedPost?._id || report.reportedPost}
+                              Post ID: {report.reportedPost?._id || report.reportedPost}
                             </span>
                             <button className="text-xs text-purple-600 hover:text-purple-700 dark:text-purple-400 flex items-center space-x-1">
                               <ExternalLink className="w-3 h-3" />
@@ -744,9 +661,7 @@ const ReportsManagement: React.FC = () => {
 
                     {/* Report Description */}
                     <div className="mb-4">
-                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                        {report.description}
-                      </p>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{report.description}</p>
                     </div>
 
                     {/* Evidence */}
@@ -774,13 +689,9 @@ const ReportsManagement: React.FC = () => {
                       <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
                         <div className="flex items-center space-x-1 mb-1">
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm font-medium text-green-800 dark:text-green-400">
-                            Action Taken
-                          </span>
+                          <span className="text-sm font-medium text-green-800 dark:text-green-400">Action Taken</span>
                         </div>
-                        <p className="text-sm text-green-700 dark:text-green-300">
-                          {report.actionTaken}
-                        </p>
+                        <p className="text-sm text-green-700 dark:text-green-300">{report.actionTaken}</p>
                       </div>
                     )}
 
@@ -789,13 +700,9 @@ const ReportsManagement: React.FC = () => {
                       <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                         <div className="flex items-center space-x-1 mb-1">
                           <CheckCircle className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800 dark:text-blue-400">
-                            Resolution
-                          </span>
+                          <span className="text-sm font-medium text-blue-800 dark:text-blue-400">Resolution</span>
                         </div>
-                        <p className="text-sm text-blue-700 dark:text-blue-300">
-                          {report.resolution}
-                        </p>
+                        <p className="text-sm text-blue-700 dark:text-blue-300">{report.resolution}</p>
                       </div>
                     )}
 
@@ -832,13 +739,7 @@ const ReportsManagement: React.FC = () => {
                               Investigate
                             </button>
                             <button
-                              onClick={() =>
-                                handleResolveReport(
-                                  report._id,
-                                  "Report reviewed and resolved",
-                                  "none"
-                                )
-                              }
+                              onClick={() => handleResolveReport(report._id, "Report reviewed and resolved", "none")}
                               disabled={actionLoading === report._id}
                               className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
                             >
@@ -865,13 +766,7 @@ const ReportsManagement: React.FC = () => {
                         )}
                         {report.status === "investigating" && (
                           <button
-                            onClick={() =>
-                              handleResolveReport(
-                                report._id,
-                                "Investigation completed",
-                                "warning_sent"
-                              )
-                            }
+                            onClick={() => handleResolveReport(report._id, "Investigation completed", "warning_sent")}
                             disabled={actionLoading === report._id}
                             className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                           >
@@ -907,8 +802,7 @@ const ReportsManagement: React.FC = () => {
 
                 {/* Page numbers */}
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  const pageNum =
-                    Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
+                  const pageNum = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
                   if (pageNum <= totalPages) {
                     return (
                       <button
@@ -928,9 +822,7 @@ const ReportsManagement: React.FC = () => {
                 })}
 
                 <button
-                  onClick={() =>
-                    setCurrentPage(Math.min(totalPages, currentPage + 1))
-                  }
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                   className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
                 >

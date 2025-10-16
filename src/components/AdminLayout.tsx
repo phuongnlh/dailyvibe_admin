@@ -8,14 +8,9 @@ import { Menu, X } from "lucide-react";
 interface AdminLayoutProps {
   children: React.ReactNode;
   title?: string;
-  breadcrumbs?: { label: string; href?: string }[];
 }
 
-const AdminLayout: React.FC<AdminLayoutProps> = ({
-  children,
-  title = "Dashboard",
-  breadcrumbs = [],
-}) => {
+const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = "Dashboard" }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -43,24 +38,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
       />
 
       {/* Main Content */}
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300`}
-      >
+      <div className={`flex-1 flex flex-col transition-all duration-300`}>
         {/* Header */}
-        <AdminHeader
-          title={title}
-          breadcrumbs={breadcrumbs}
-          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        />
+        <AdminHeader title={title} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
           <div className="container mx-auto px-4 py-6 max-w-7xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
               {children}
             </motion.div>
           </div>

@@ -17,21 +17,8 @@ import {
   Area,
 } from "recharts";
 import { motion } from "framer-motion";
-import {
-  Users,
-  FileText,
-  MessageSquare,
-  Eye,
-  TrendingUp,
-  Activity,
-  Shield,
-} from "lucide-react";
-import {
-  getDailyInteractions,
-  getPlatformStatistics,
-  getPostStats,
-  getUserGrowth,
-} from "../api/admin";
+import { Users, FileText, MessageSquare, Eye, TrendingUp, Activity, Shield } from "lucide-react";
+import { getDailyInteractions, getPlatformStatistics, getPostStats, getStatsData, getUserGrowth } from "../api/admin";
 import AdminLayout from "../components/AdminLayout";
 
 const moderationData = [
@@ -50,12 +37,7 @@ interface StatCardProps {
   color: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({
-  title,
-  value,
-  icon: Icon,
-  color,
-}) => {
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, color }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -64,9 +46,7 @@ const StatCard: React.FC<StatCardProps> = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            {title}
-          </p>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {typeof value === "number" ? value.toLocaleString() : value}
           </p>
@@ -114,7 +94,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const getStats = async () => {
-      const stats = await getPlatformStatistics();
+      const stats = await getStatsData();
       const post_stats = await getPostStats();
       const userGradient = await getUserGrowth();
       const dailyInteractions = await getDailyInteractions();
@@ -127,10 +107,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <AdminLayout
-      title="Dashboard"
-      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Dashboard" }]}
-    >
+    <AdminLayout title="Dashboard">
       <div className="space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -169,14 +146,10 @@ export default function Dashboard() {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                User Growth
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">User Growth</h2>
               <div className="flex items-center space-x-2">
                 <Activity className="w-5 h-5 text-purple-500" />
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Last 6 months
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Last 6 months</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={350}>
@@ -187,16 +160,8 @@ export default function Dashboard() {
                     <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
-                <XAxis
-                  dataKey="month"
-                  stroke="#6B7280"
-                  tick={{ fill: "#6B7280" }}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                <XAxis dataKey="month" stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <YAxis stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <Tooltip
                   contentStyle={{
@@ -216,29 +181,30 @@ export default function Dashboard() {
                   fill="url(#userGradient)"
                   name="Total Users"
                 />
-                <Line
-                  type="monotone"
-                  dataKey="newUsers"
-                  stroke="#06B6D4"
-                  strokeWidth={2}
-                  name="New Users"
-                />
+                <Line type="monotone" dataKey="newUsers" stroke="#06B6D4" strokeWidth={2} name="New Users" />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
 
           {/* Post Types Distribution */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            whileHover={{ scale: 1.01 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300"
           >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
                 Content Distribution
               </h2>
-              <FileText className="w-5 h-5 text-green-500" />
+              <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+                <FileText className="w-5 h-5 text-green-600 dark:text-green-400" />
+              </div>
             </div>
+
+            {/* Chart */}
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
                 <Pie
@@ -248,23 +214,27 @@ export default function Dashboard() {
                   cx="50%"
                   cy="50%"
                   outerRadius={120}
-                  innerRadius={60}
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
+                  innerRadius={70}
+                  paddingAngle={3}
+                  cornerRadius={8}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   labelLine={false}
                 >
                   {postData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} />
+                    <Cell key={index} fill={entry.color} stroke="none" />
                   ))}
                 </Pie>
                 <Tooltip
+                  formatter={(value, name) => [`${value}`, name]}
                   contentStyle={{
                     backgroundColor: "#1F2937",
                     border: "none",
                     borderRadius: "8px",
                     color: "#F9FAFB",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                   }}
+                  labelStyle={{ color: "#9CA3AF" }}
+                  itemStyle={{ color: "#F9FAFB" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -280,23 +250,13 @@ export default function Dashboard() {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Daily Interactions
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Daily Interactions</h2>
               <TrendingUp className="w-5 h-5 text-blue-500" />
             </div>
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={dailyInteractionsData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
-                <XAxis
-                  dataKey="day"
-                  stroke="#6B7280"
-                  tick={{ fill: "#6B7280" }}
-                />
+              <BarChart data={[...dailyInteractionsData].reverse()}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                <XAxis dataKey="day" stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <YAxis stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <Tooltip
                   contentStyle={{
@@ -307,24 +267,9 @@ export default function Dashboard() {
                   }}
                 />
                 <Legend />
-                <Bar
-                  dataKey="reactions"
-                  fill="#EF4444"
-                  name="Reactions"
-                  radius={[2, 2, 0, 0]}
-                />
-                <Bar
-                  dataKey="comments"
-                  fill="#10B981"
-                  name="Comments"
-                  radius={[2, 2, 0, 0]}
-                />
-                <Bar
-                  dataKey="shares"
-                  fill="#F59E0B"
-                  name="Shares"
-                  radius={[2, 2, 0, 0]}
-                />
+                <Bar dataKey="reactions" fill="#EF4444" name="Reactions" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="comments" fill="#10B981" name="Comments" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="shares" fill="#F59E0B" name="Shares" radius={[2, 2, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </motion.div>
@@ -336,23 +281,13 @@ export default function Dashboard() {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Moderation Activity
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Moderation Activity</h2>
               <Shield className="w-5 h-5 text-red-500" />
             </div>
             <ResponsiveContainer width="100%" height={350}>
               <LineChart data={moderationData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
-                <XAxis
-                  dataKey="hour"
-                  stroke="#6B7280"
-                  tick={{ fill: "#6B7280" }}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                <XAxis dataKey="hour" stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <YAxis stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <Tooltip
                   contentStyle={{

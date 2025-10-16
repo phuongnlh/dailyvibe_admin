@@ -77,23 +77,15 @@ const Analytics: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
-              {value}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
             <div className="flex items-center mt-2">
               {isPositive ? (
                 <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
               ) : (
                 <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
               )}
-              <span
-                className={`text-sm font-medium ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
                 {isPositive ? "+" : ""}
                 {change}%
               </span>
@@ -109,10 +101,7 @@ const Analytics: React.FC = () => {
   };
 
   return (
-    <AdminLayout
-      title="Analytics"
-      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Analytics" }]}
-    >
+    <AdminLayout title="Analytics">
       <div className="space-y-6">
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -155,40 +144,22 @@ const Analytics: React.FC = () => {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Traffic Overview
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Traffic Overview</h2>
               <Globe className="w-5 h-5 text-blue-500" />
             </div>
             <ResponsiveContainer width="100%" height={350}>
               <AreaChart data={trafficData}>
                 <defs>
-                  <linearGradient
-                    id="sessionsGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
+                  <linearGradient id="sessionsGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                   </linearGradient>
-                  <linearGradient
-                    id="pageViewsGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
+                  <linearGradient id="pageViewsGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#06B6D4" stopOpacity={0.3} />
                     <stop offset="95%" stopColor="#06B6D4" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
                 <XAxis dataKey="month" stroke="#6B7280" />
                 <YAxis stroke="#6B7280" />
                 <Tooltip
@@ -227,9 +198,7 @@ const Analytics: React.FC = () => {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Device Distribution
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Device Distribution</h2>
               <Smartphone className="w-5 h-5 text-purple-500" />
             </div>
             <ResponsiveContainer width="100%" height={350}>
@@ -242,9 +211,7 @@ const Analytics: React.FC = () => {
                   cy="50%"
                   outerRadius={120}
                   innerRadius={60}
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {deviceData.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
@@ -257,31 +224,16 @@ const Analytics: React.FC = () => {
             {/* Device Stats */}
             <div className="mt-4 space-y-3">
               {deviceData.map((device, index) => {
-                const Icon =
-                  device.name === "Desktop"
-                    ? Monitor
-                    : device.name === "Mobile"
-                    ? Smartphone
-                    : Tablet;
+                const Icon = device.name === "Desktop" ? Monitor : device.name === "Mobile" ? Smartphone : Tablet;
                 return (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between"
-                  >
+                  <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Icon className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">
-                        {device.name}
-                      </span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{device.name}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: device.color }}
-                      />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {device.value}%
-                      </span>
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: device.color }} />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">{device.value}%</span>
                     </div>
                   </div>
                 );
@@ -299,9 +251,7 @@ const Analytics: React.FC = () => {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Real-time Users
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Real-time Users</h2>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 <span className="text-sm text-gray-500">Live</span>
@@ -335,9 +285,7 @@ const Analytics: React.FC = () => {
             className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Top Pages
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Top Pages</h2>
               <Eye className="w-5 h-5 text-orange-500" />
             </div>
             <div className="space-y-4">
@@ -348,23 +296,15 @@ const Analytics: React.FC = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center justify-center w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
-                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">
-                        {index + 1}
-                      </span>
+                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">{index + 1}</span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        {page.page}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {page.views.toLocaleString()} views
-                      </p>
+                      <p className="font-medium text-gray-900 dark:text-white">{page.page}</p>
+                      <p className="text-sm text-gray-500">{page.views.toLocaleString()} views</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                      {page.percentage}%
-                    </p>
+                    <p className="font-semibold text-gray-900 dark:text-white">{page.percentage}%</p>
                     <div className="w-20 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-purple-500 transition-all duration-300"
