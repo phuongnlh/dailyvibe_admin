@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import AdminSidebar from "./AdminSidebar";
-import AdminHeader from "./AdminHeader";
-import AdminFooter from "./AdminFooter";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import React, { useState } from "react";
+import AdminFooter from "./AdminFooter";
+import AdminHeader from "./AdminHeader";
+import AdminSidebar from "./AdminSidebar";
 
 interface AdminLayoutProps {
   children: React.ReactNode;

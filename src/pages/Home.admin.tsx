@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Activity, Eye, FileText, MessageSquare, Shield, TrendingUp, Users } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import {
-  LineChart,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
   Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
 } from "recharts";
-import { motion } from "framer-motion";
-import { Users, FileText, MessageSquare, Eye, TrendingUp, Activity, Shield } from "lucide-react";
-import { getDailyInteractions, getPlatformStatistics, getPostStats, getStatsData, getUserGrowth } from "../api/admin";
+import { getDailyInteractions, getPostStats, getStatsData, getUserGrowth } from "../api/admin";
 import AdminLayout from "../components/AdminLayout";
 
 const moderationData = [
@@ -217,7 +217,7 @@ export default function Dashboard() {
                   innerRadius={70}
                   paddingAngle={3}
                   cornerRadius={8}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   labelLine={false}
                 >
                   {postData.map((entry, index) => (

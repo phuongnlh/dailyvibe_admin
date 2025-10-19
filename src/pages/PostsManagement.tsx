@@ -1,32 +1,30 @@
-import React, { useCallback, useEffect, useState } from "react";
-import AdminLayout from "../components/AdminLayout";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  FileText,
-  Image,
-  Video,
-  Heart,
-  MessageCircle,
-  Share2,
-  Eye,
-  MoreVertical,
-  Edit,
-  Trash2,
-  Flag,
-  Lock,
-  Unlock,
-  Search,
-  Filter,
-  Calendar,
-  TrendingUp,
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
+  Eye,
+  FileText,
+  Filter,
+  Flag,
+  Heart,
+  Image,
+  Lock,
+  MessageCircle,
+  MoreVertical,
+  Search,
+  Share2,
   SortAsc,
   SortDesc,
+  Trash2,
+  TrendingUp,
+  Unlock,
+  Video,
 } from "lucide-react";
-import api from "../api/axios";
+import React, { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import api from "../api/axios";
+import AdminLayout from "../components/AdminLayout";
 
 interface PostFilters {
   page?: number;

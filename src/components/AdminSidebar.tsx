@@ -11,7 +11,6 @@ import {
   Moon,
   Settings,
   Sun,
-  TrendingUp,
   User,
   Users,
 } from "lucide-react";

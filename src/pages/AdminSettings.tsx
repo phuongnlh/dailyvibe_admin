@@ -197,7 +197,7 @@ const AdminSettings: React.FC = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (isDropdownOpen && !event.target.closest(".relative")) {
         setIsDropdownOpen(false);
       }

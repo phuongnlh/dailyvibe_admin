@@ -1,29 +1,25 @@
-import React, { useState } from "react";
-import AdminLayout from "../components/AdminLayout";
 import { motion } from "framer-motion";
 import {
-  MessageCircle,
-  Reply,
-  Flag,
-  Trash2,
-  CheckCircle,
-  AlertTriangle,
-  MoreVertical,
-  Search,
-  Filter,
-  ArrowUp,
   ArrowDown,
-  Eye,
+  ArrowUp,
   Ban,
-  Heart,
-  TrendingUp,
-  Users,
+  CheckCircle,
   Clock,
+  Eye,
+  Filter,
+  Flag,
+  MessageCircle,
+  MoreVertical,
+  Reply,
+  Search,
   Shield,
-  ThumbsUp,
   ThumbsDown,
-  User,
+  ThumbsUp,
+  Trash2,
+  TrendingUp,
 } from "lucide-react";
+import React, { useState } from "react";
+import AdminLayout from "../components/AdminLayout";
 
 const CommentsManagement: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("all");
@@ -281,14 +277,6 @@ const CommentsManagement: React.FC = () => {
     setSelectedComments((prev) =>
       prev.includes(commentId) ? prev.filter((id) => id !== commentId) : [...prev, commentId]
     );
-  };
-
-  const handleSelectAll = () => {
-    if (selectedComments.length === filteredComments.length) {
-      setSelectedComments([]);
-    } else {
-      setSelectedComments(filteredComments.map((comment) => comment.id));
-    }
   };
 
   const formatDate = (dateString: string) => {

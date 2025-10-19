@@ -1,50 +1,39 @@
-import React, { useState, useEffect } from "react";
-import AdminLayout from "../components/AdminLayout";
 import { motion } from "framer-motion";
 import {
+  AlertCircle,
+  AlertTriangle,
+  Ban,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+  Eye,
+  FileText,
+  Flag,
+  Image,
+  Loader,
+  MessageCircle,
+  MoreVertical,
+  RefreshCw,
+  Search,
+  Shield,
+  User,
+  UserX,
+  Video,
+  XCircle,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  bulkUpdateReports,
   getAllReports,
   getReportStats,
-  updateReportStatus,
-  assignReport,
-  addAdminNote,
   resolveReport,
-  bulkUpdateReports,
-  formatReportType,
-  formatReportStatus,
-  formatReportPriority,
-  formatActionTaken,
-  type ReportListQuery,
-  type UpdateReportStatusData,
-  type ResolveReportData,
+  updateReportStatus,
   type BulkUpdateReportsData,
+  type ReportListQuery,
+  type ResolveReportData,
+  type UpdateReportStatusData,
 } from "../api/report";
-import {
-  AlertTriangle,
-  Flag,
-  Eye,
-  CheckCircle,
-  XCircle,
-  Clock,
-  User,
-  MessageCircle,
-  Image,
-  Video,
-  FileText,
-  Search,
-  Filter,
-  MoreVertical,
-  Calendar,
-  TrendingUp,
-  Shield,
-  UserX,
-  Ban,
-  Trash2,
-  ExternalLink,
-  Star,
-  AlertCircle,
-  RefreshCw,
-  Loader,
-} from "lucide-react";
+import AdminLayout from "../components/AdminLayout";
 
 const ReportsManagement: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("all");
@@ -267,14 +256,6 @@ const ReportsManagement: React.FC = () => {
     setSelectedReports((prev) =>
       prev.includes(reportId) ? prev.filter((id) => id !== reportId) : [...prev, reportId]
     );
-  };
-
-  const handleSelectAll = () => {
-    if (selectedReports.length === filteredReports.length) {
-      setSelectedReports([]);
-    } else {
-      setSelectedReports(filteredReports.map((report) => report._id));
-    }
   };
 
   const formatDate = (dateString: string) => {
@@ -672,7 +653,7 @@ const ReportsManagement: React.FC = () => {
                           {report.evidence.length !== 1 ? "s" : ""})
                         </h5>
                         <div className="flex space-x-2">
-                          {report.evidence.map((evidence, index) => (
+                          {report.evidence.map((evidence: any, index: number) => (
                             <button
                               key={index}
                               className="px-3 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/30 transition-colors"

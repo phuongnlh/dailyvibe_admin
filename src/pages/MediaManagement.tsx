@@ -1,30 +1,25 @@
-import React, { useState } from "react";
-import AdminLayout from "../components/AdminLayout";
 import { motion } from "framer-motion";
 import {
-  Image,
-  Video,
-  FileText,
-  Download,
-  Trash2,
-  Eye,
-  MoreVertical,
-  Grid3X3,
-  List,
-  Search,
-  Filter,
-  Upload,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
-  Calendar,
-  HardDrive,
-  TrendingUp,
   AlertCircle,
   CheckCircle,
+  Download,
+  Eye,
+  FileText,
+  Filter,
+  Grid3X3,
+  HardDrive,
+  Image,
+  List,
+  MoreVertical,
+  Play,
+  Search,
+  Trash2,
+  TrendingUp,
+  Upload,
+  Video,
 } from "lucide-react";
+import React, { useState } from "react";
+import AdminLayout from "../components/AdminLayout";
 
 const MediaManagement: React.FC = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");

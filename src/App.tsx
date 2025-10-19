@@ -3,7 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingScreen from "./components/Load/LoadingScreen";
-import { AppProvider } from "./contexts/AppContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AdminLogin from "./pages/AdminLogin";
 import AdminSettings from "./pages/AdminSettings";
@@ -132,11 +131,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <AppProvider>
-      <ThemeProvider>{loading ? <LoadingScreen isFading={fade} /> : <AppContent />}</ThemeProvider>
-    </AppProvider>
-  );
+  return <ThemeProvider>{loading ? <LoadingScreen isFading={fade} /> : <AppContent />}</ThemeProvider>;
 }
 
 export default App;
