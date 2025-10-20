@@ -7,11 +7,10 @@ import {
   FileText,
   Filter,
   Flag,
+  Globe,
   Heart,
-  Image,
   Lock,
   MessageCircle,
-  MoreVertical,
   Search,
   Share2,
   SortAsc,
@@ -19,12 +18,13 @@ import {
   Trash2,
   TrendingUp,
   Unlock,
-  Video,
+  User,
 } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import api from "../api/axios";
 import AdminLayout from "../components/AdminLayout";
+import { ViewPost } from "../components/ViewPost";
 
 interface PostFilters {
   page?: number;
@@ -70,6 +70,7 @@ const PostsManagement: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
+  const [selectedViewPost, setSelectedViewPost] = useState<any>(null);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -276,14 +277,16 @@ const PostsManagement: React.FC = () => {
     });
   };
 
-  const getMediaIcon = (type: string) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
-      case "image":
-        return <Image className="w-4 h-4" />;
-      case "video":
-        return <Video className="w-4 h-4" />;
+      case "Public":
+        return <Globe className="w-4 h-4" />;
+      case "Friends":
+        return <User className="w-4 h-4" />;
+      case "Private":
+        return <Lock className="w-4 h-4" />;
       default:
-        return <FileText className="w-4 h-4" />;
+        return <Globe className="w-4 h-4" />;
     }
   };
 
@@ -376,16 +379,16 @@ const PostsManagement: React.FC = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
+            title="Posts Today"
+            value={stats.postsToday}
+            icon={TrendingUp}
+            color="bg-gradient-to-r from-green-500 to-green-600"
+          />
+          <StatCard
             title="Total Posts"
             value={stats.totalPosts}
             icon={FileText}
             color="bg-gradient-to-r from-blue-500 to-blue-600"
-          />
-          <StatCard
-            title="Published Today"
-            value={stats.postsToday}
-            icon={TrendingUp}
-            color="bg-gradient-to-r from-green-500 to-green-600"
           />
           <StatCard
             title="Reported Posts"
@@ -472,9 +475,9 @@ const PostsManagement: React.FC = () => {
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     >
                       <option value="">All Types</option>
-                      <option value="text">Text</option>
-                      <option value="image">Image</option>
-                      <option value="video">Video</option>
+                      <option value="Public">Public</option>
+                      <option value="Friends">Friends</option>
+                      <option value="Private">Private</option>
                     </select>
                   </div>
 
@@ -644,11 +647,22 @@ const PostsManagement: React.FC = () => {
                           <div className="flex-shrink-0">
                             {post.media && post.media.length > 0 ? (
                               <div className="relative">
-                                <img
-                                  src={post.media[0].thumbnail || post.media[0].url}
-                                  alt="Post media"
-                                  className="w-12 h-12 rounded-lg object-cover"
-                                />
+                                {post.media[0].type === "video" && (
+                                  <video src={post.media[0].url} className="w-12 h-12 object-cover" />
+                                )}
+                                {post.media[0].type === "image" && (
+                                  <img
+                                    src={post.media[0].thumbnail || post.media[0].url}
+                                    alt="Post media"
+                                    className="w-12 h-12 rounded-lg object-cover"
+                                    loading="lazy"
+                                  />
+                                )}
+                                {post.media.length > 1 && (
+                                  <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
+                                    <span className="text-xs text-white">+{post.media.length - 1}</span>
+                                  </div>
+                                )}
                               </div>
                             ) : (
                               <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -661,7 +675,7 @@ const PostsManagement: React.FC = () => {
                               {post.content}
                             </p>
                             <div className="flex items-center mt-1 space-x-2">
-                              {getMediaIcon(post.type)}
+                              {getTypeIcon(post.type)}
                               <span className="text-xs text-gray-500 capitalize">{post.type} post</span>
                               {post.reportCount > 0 && (
                                 <div className="flex items-center space-x-1">
@@ -727,7 +741,13 @@ const PostsManagement: React.FC = () => {
                       <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">{formatDate(post.createdAt)}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
-                          <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded" title="View Details">
+                          <button
+                            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
+                            title="View Details"
+                            onClick={() => {
+                              setSelectedViewPost(post);
+                            }}
+                          >
                             <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                           </button>
                           {post.is_deleted ? (
@@ -747,9 +767,6 @@ const PostsManagement: React.FC = () => {
                               <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
                             </button>
                           )}
-                          <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded" title="More Options">
-                            <MoreVertical className="w-4 h-4 text-gray-400" />
-                          </button>
                         </div>
                       </td>
                     </tr>
@@ -763,6 +780,7 @@ const PostsManagement: React.FC = () => {
           <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">{renderPagination()}</div>
         </motion.div>
       </div>
+      {selectedViewPost && <ViewPost post={selectedViewPost} onClose={() => setSelectedViewPost(null)} />}
     </AdminLayout>
   );
 };

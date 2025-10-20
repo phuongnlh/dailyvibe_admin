@@ -7,7 +7,6 @@ import {
   Flag,
   Home,
   LogOut,
-  MessageSquare,
   Moon,
   Settings,
   Sun,
@@ -45,12 +44,6 @@ const menuItems = [
     icon: FileText,
     path: "/posts",
     color: "text-orange-600 dark:text-orange-400",
-  },
-  {
-    title: "Comments",
-    icon: MessageSquare,
-    path: "/comments",
-    color: "text-cyan-600 dark:text-cyan-400",
   },
   {
     title: "Reports",

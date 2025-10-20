@@ -19,6 +19,7 @@ const EmailPreviewModal = ({ form, onClose }: any) => {
         });
         if (res.status === 200 || res.status === 201) {
           Swal.fire("Success", "Template saved successfully", "success");
+          onClose();
         }
       }
     } catch (error) {
