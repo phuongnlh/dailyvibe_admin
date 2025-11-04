@@ -46,12 +46,6 @@ const menuItems = [
     color: "text-orange-600 dark:text-orange-400",
   },
   {
-    title: "Reports",
-    icon: Flag,
-    path: "/reports",
-    color: "text-red-600 dark:text-red-400",
-  },
-  {
     title: "Groups Management",
     icon: Users,
     path: "/groups",

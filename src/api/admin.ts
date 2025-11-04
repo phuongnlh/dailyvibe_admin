@@ -105,26 +105,15 @@ export async function getAllPosts(
   return api.get(`/posts?${params.toString()}`);
 }
 
-export async function deletePost(postId: string) {
-  return api.delete(`/posts/${postId}`);
+// Payment Analytics APIs
+export async function getPaymentAnalytics(period: '7' | '30' | '90' = '30') {
+  return api.get("/dashboard/payment-analytics", { params: { period } });
 }
 
-// Report Management APIs
-export async function getAllReports(
-  filters: {
-    page?: number;
-    limit?: number;
-    status?: string;
-    type?: string;
-  } = {}
-) {
-  const params = new URLSearchParams();
-  Object.entries(filters).forEach(([key, value]) => {
-    if (value) params.append(key, value.toString());
-  });
-  return api.get(`/reports?${params.toString()}`);
+export async function getPaymentSummary(period = "30d") {
+  return api.get("/dashboard/payment-summary", { params: { period } });
 }
 
-export async function updateReportStatus(reportId: string, status: "pending" | "resolved" | "dismissed") {
-  return api.patch(`/reports/${reportId}/status`, { status });
+export async function getPaymentMethodStats() {
+  return api.get("/dashboard/payment-method-stats");
 }

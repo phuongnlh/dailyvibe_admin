@@ -258,11 +258,11 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
 
                   {/* Warnings */}
                   <td className="px-4 py-4 whitespace-nowrap">
-                    {item.warningCount > 0 ? (
+                    {item.group.warningCount > 0 ? (
                       <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-300 rounded-full">
                         <AlertTriangle className="w-3 h-3 mr-1" />
 
-                        {item.warningCount}
+                        {item.group.warningCount}
                       </span>
                     ) : (
                       <span className="text-gray-400 text-sm">0</span>

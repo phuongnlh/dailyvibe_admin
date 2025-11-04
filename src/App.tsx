@@ -13,7 +13,6 @@ import Analytics from "./pages/Analytics";
 import GroupManagement from "./pages/GroupManagement";
 import Dashboard from "./pages/Home.admin";
 import PostsManagement from "./pages/PostsManagement";
-import ReportsManagement from "./pages/ReportsManagement";
 import UsersManagement from "./pages/UsersManagement";
 import PrivateAdminRoute from "./router/PrivateAdminRoute";
 import PublicAdminRoute from "./router/PublicAdminRoute";
@@ -74,14 +73,6 @@ function AppContent() {
           />
 
           {/* Moderation */}
-          <Route
-            path="/reports"
-            element={
-              <PrivateAdminRoute>
-                <ReportsManagement />
-              </PrivateAdminRoute>
-            }
-          />
           <Route
             path="/groups"
             element={
