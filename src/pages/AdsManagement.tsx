@@ -1,49 +1,48 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CheckCircle,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Clock,
+  DollarSign,
   Eye,
   Filter,
   Flag,
+  Megaphone,
   Search,
   TrendingUp,
-  DollarSign,
-  Megaphone,
-  ChevronUp,
-  ChevronDown,
 } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import AdminLayout from "../components/AdminLayout";
-import { ViewPost } from "../components/ViewPost";
-import { AllAdsTab } from "../components/Ads/Tabs/AllAds";
-import { PendingAdsTab } from "../components/Ads/Tabs/PendingTab";
-import { InvestigatingAdsTab } from "../components/Ads/Tabs/InvestigatingAdsTab";
-import { ResolvedAdsTab } from "../components/Ads/Tabs/ResolvedTab";
 import { updateUserStatus } from "../api/admin";
 import {
-  getAllAds,
-  getAdStats,
-  getAdStatistics,
+  approveAd,
+  deleteAd,
+  dismissAllPendingReportsOfAd,
   getAdReportStats,
   getAdsPostReportsByStatus,
+  getAdStats,
+  getAllAds,
   getResolvedAdsPostReports,
-  dismissAllPendingReportsOfAd,
   markAdAsInvestigating,
   pauseAd,
-  resumeAd,
-  approveAd,
   rejectAd,
-  deleteAd,
+  resumeAd,
   type Ad,
-  type GetAdsParams,
   type AdsPostReportItem,
-  type ResolvedAdsPostReportItem,
+  type GetAdsParams,
   type GetAdsPostReportsParams,
   type GetResolvedAdsPostReportsParams,
+  type ResolvedAdsPostReportItem,
 } from "../api/ads";
+import AdminLayout from "../components/AdminLayout";
+import { AllAdsTab } from "../components/Ads/Tabs/AllAds";
+import { InvestigatingAdsTab } from "../components/Ads/Tabs/InvestigatingAdsTab";
+import { PendingAdsTab } from "../components/Ads/Tabs/PendingTab";
+import { ResolvedAdsTab } from "../components/Ads/Tabs/ResolvedTab";
+import { ViewPost } from "../components/ViewPost";
 
 interface AdFilters extends GetAdsParams {
   page?: number;
@@ -67,12 +66,8 @@ const AdsManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [pendingReports, setPendingReports] = useState<AdsPostReportItem[]>([]);
 
-  const [investigatingReports, setInvestigatingReports] = useState<
-    AdsPostReportItem[]
-  >([]);
-  const [resolvedReports, setResolvedReports] = useState<
-    ResolvedAdsPostReportItem[]
-  >([]);
+  const [investigatingReports, setInvestigatingReports] = useState<AdsPostReportItem[]>([]);
+  const [resolvedReports, setResolvedReports] = useState<ResolvedAdsPostReportItem[]>([]);
 
   // Pagination for Pending tab
   const [pendingPagination, setPendingPagination] = useState({
@@ -106,22 +101,20 @@ const AdsManagement: React.FC = () => {
     sortOrder: "desc",
   });
 
-  const [investigatingParams, setInvestigatingParams] =
-    useState<GetAdsPostReportsParams>({
-      page: 1,
-      limit: 10,
-      status: "investigating",
-      sortBy: "latestReportDate",
-      sortOrder: "desc",
-    });
+  const [investigatingParams, setInvestigatingParams] = useState<GetAdsPostReportsParams>({
+    page: 1,
+    limit: 10,
+    status: "investigating",
+    sortBy: "latestReportDate",
+    sortOrder: "desc",
+  });
 
-  const [resolvedParams, setResolvedParams] =
-    useState<GetResolvedAdsPostReportsParams>({
-      page: 1,
-      limit: 10,
-      sortBy: "resolvedDate",
-      sortOrder: "desc",
-    });
+  const [resolvedParams, setResolvedParams] = useState<GetResolvedAdsPostReportsParams>({
+    page: 1,
+    limit: 10,
+    sortBy: "resolvedDate",
+    sortOrder: "desc",
+  });
 
   const [adStatistics, setAdStatistics] = useState({
     totalAds: 0,
@@ -164,26 +157,22 @@ const AdsManagement: React.FC = () => {
   });
 
   // Fetch ad statistics
-  const fetchAdStatistics = useCallback(async () => {
-    try {
-      const response = await getAdStatistics();
+  // const fetchAdStatistics = useCallback(async () => {
+  //   try {
+  //     const response = await getAdStatistics();
+  //   } catch (error) {
+  //     console.error("Error fetching ad statistics:", error);
+  //   }
+  // }, []);
 
-    } catch (error) {
-      console.error("Error fetching ad statistics:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchAdStatistics();
-  }, [fetchAdStatistics]);
+  // useEffect(() => {
+  //   fetchAdStatistics();
+  // }, [fetchAdStatistics]);
 
   const fetchAds = useCallback(async () => {
     setLoading(true);
     try {
-      const [resAd, resStats] = await Promise.all([
-        getAllAds(filters),
-        getAdStats(),
-      ]);
+      const [resAd, resStats] = await Promise.all([getAllAds(filters), getAdStats()]);
 
       setAds(resAd.data.data.docs || []);
       setPagination({
@@ -331,14 +320,7 @@ const AdsManagement: React.FC = () => {
     } else if (activeTab === "all") {
       fetchAds();
     }
-  }, [
-    activeTab,
-    fetchPendingReports,
-    fetchInvestigatingReports,
-    fetchResolvedReports,
-    fetchAds,
-    fetchAdReportStats,
-  ]);
+  }, [activeTab, fetchPendingReports, fetchInvestigatingReports, fetchResolvedReports, fetchAds, fetchAdReportStats]);
 
   const handleDismissAllReports = async (postId: string) => {
     try {
@@ -352,7 +334,7 @@ const AdsManagement: React.FC = () => {
       }
 
       // Refresh statistics
-      await fetchAdStatistics();
+      // await fetchAdStatistics();
       await fetchAdReportStats();
     } catch (error) {
       console.error("Error dismissing reports:", error);
@@ -369,7 +351,7 @@ const AdsManagement: React.FC = () => {
       await fetchInvestigatingReports();
 
       // Refresh statistics
-      await fetchAdStatistics();
+      // await fetchAdStatistics();
       await fetchAdReportStats();
     } catch (error) {
       console.error("Error marking as investigating:", error);
@@ -396,7 +378,7 @@ const AdsManagement: React.FC = () => {
 
         await fetchPendingReports();
         await fetchInvestigatingReports();
-        await fetchAdStatistics();
+        // await fetchAdStatistics();
         await fetchAdReportStats();
 
         setSelectedAds([]);
@@ -434,7 +416,7 @@ const AdsManagement: React.FC = () => {
       } else if (activeTab === "investigating") {
         fetchInvestigatingReports();
       }
-      fetchAdStatistics();
+      // fetchAdStatistics();
       fetchAdReportStats();
     } catch (error) {
       console.error("Error banning user:", error);
@@ -446,8 +428,7 @@ const AdsManagement: React.FC = () => {
     setPendingParams((prev) => ({
       ...prev,
       sortBy: field,
-      sortOrder:
-        prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
+      sortOrder: prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
       page: 1,
     }));
   };
@@ -456,8 +437,7 @@ const AdsManagement: React.FC = () => {
     setInvestigatingParams((prev) => ({
       ...prev,
       sortBy: field,
-      sortOrder:
-        prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
+      sortOrder: prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
       page: 1,
     }));
   };
@@ -471,10 +451,7 @@ const AdsManagement: React.FC = () => {
   };
 
   const handleSort = (sortBy: string) => {
-    const newSortOrder =
-      filters.sort_by === sortBy && filters.sort_order === "asc"
-        ? "desc"
-        : "asc";
+    const newSortOrder = filters.sort_by === sortBy && filters.sort_order === "asc" ? "desc" : "asc";
     setFilters((prev) => ({
       ...prev,
       sort_by: sortBy,
@@ -486,8 +463,7 @@ const AdsManagement: React.FC = () => {
     setResolvedParams((prev) => ({
       ...prev,
       sortBy: field,
-      sortOrder:
-        prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
+      sortOrder: prev.sortBy === field && prev.sortOrder === "desc" ? "asc" : "desc",
       page: 1,
     }));
   };
@@ -554,9 +530,7 @@ const AdsManagement: React.FC = () => {
   ];
 
   const handleSelectAd = (adId: string) => {
-    setSelectedAds((prev) =>
-      prev.includes(adId) ? prev.filter((id) => id !== adId) : [...prev, adId]
-    );
+    setSelectedAds((prev) => (prev.includes(adId) ? prev.filter((id) => id !== adId) : [...prev, adId]));
   };
 
   const handleSelectAllPosts = () => {
@@ -569,10 +543,7 @@ const AdsManagement: React.FC = () => {
     }
   };
 
-  const handleAdAction = async (
-    adId: string,
-    action: "delete" | "pause" | "resume" | "approve" | "reject"
-  ) => {
+  const handleAdAction = async (adId: string, action: "delete" | "pause" | "resume" | "approve" | "reject") => {
     const actionText = {
       delete: "delete",
       pause: "pause",
@@ -620,7 +591,7 @@ const AdsManagement: React.FC = () => {
             fetchAds();
           }
 
-          fetchAdStatistics();
+          // fetchAdStatistics();
           fetchAdReportStats();
         } catch (error) {
           Swal.fire("Error", `Failed to ${actionText} ad.`, "error");
@@ -694,8 +665,7 @@ const AdsManagement: React.FC = () => {
         totalPages: pendingPagination.totalPages,
         limit: pendingPagination.limit,
         totalDocs: pendingPagination.totalReportedAds,
-        hasNextPage:
-          pendingPagination.currentPage < pendingPagination.totalPages,
+        hasNextPage: pendingPagination.currentPage < pendingPagination.totalPages,
         hasPrevPage: pendingPagination.currentPage > 1,
       };
     } else if (activeTab === "investigating") {
@@ -704,9 +674,7 @@ const AdsManagement: React.FC = () => {
         totalPages: investigatingPagination.totalPages,
         limit: investigatingPagination.limit,
         totalDocs: investigatingPagination.totalReportedAds,
-        hasNextPage:
-          investigatingPagination.currentPage <
-          investigatingPagination.totalPages,
+        hasNextPage: investigatingPagination.currentPage < investigatingPagination.totalPages,
         hasPrevPage: investigatingPagination.currentPage > 1,
       };
     } else if (activeTab === "resolved") {
@@ -715,18 +683,14 @@ const AdsManagement: React.FC = () => {
         totalPages: resolvedPagination.totalPages,
         limit: resolvedPagination.limit,
         totalDocs: resolvedPagination.totalReportedAds,
-        hasNextPage:
-          resolvedPagination.currentPage < resolvedPagination.totalPages,
+        hasNextPage: resolvedPagination.currentPage < resolvedPagination.totalPages,
         hasPrevPage: resolvedPagination.currentPage > 1,
       };
     }
 
     const pages = [];
     const maxVisible = 5;
-    const start = Math.max(
-      1,
-      currentPagination.page - Math.floor(maxVisible / 2)
-    );
+    const start = Math.max(1, currentPagination.page - Math.floor(maxVisible / 2));
     const end = Math.min(currentPagination.totalPages, start + maxVisible - 1);
 
     for (let i = start; i <= end; i++) {
@@ -748,17 +712,9 @@ const AdsManagement: React.FC = () => {
     return (
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700 dark:text-gray-300">
-          Showing{" "}
-          {Math.min(
-            (currentPagination.page - 1) * currentPagination.limit + 1,
-            currentPagination.totalDocs
-          )}{" "}
-          to{" "}
-          {Math.min(
-            currentPagination.page * currentPagination.limit,
-            currentPagination.totalDocs
-          )}{" "}
-          of {currentPagination.totalDocs} results
+          Showing {Math.min((currentPagination.page - 1) * currentPagination.limit + 1, currentPagination.totalDocs)} to{" "}
+          {Math.min(currentPagination.page * currentPagination.limit, currentPagination.totalDocs)} of{" "}
+          {currentPagination.totalDocs} results
         </div>
         <div className="flex items-center space-x-2">
           <button
@@ -794,31 +750,22 @@ const AdsManagement: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-              {title}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
             {typeof value === "object" && value !== null ? (
               <div className="space-y-0.5">
                 {Object.entries(value)
-                  .filter(([_, amount]) => amount > 0)
+                  .filter(([_, amount]) => (amount as number) > 0)
                   .map(([currency, amount]) => (
-                    <p
-                      key={currency}
-                      className="text-xl font-bold text-gray-900 dark:text-white truncate"
-                    >
+                    <p key={currency} className="text-xl font-bold text-gray-900 dark:text-white truncate">
                       {formatCurrency(amount as number, currency)}
                     </p>
                   ))}
                 {Object.values(value).every((amount) => amount === 0) && (
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                    $0
-                  </p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">$0</p>
                 )}
               </div>
             ) : (
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {value}
-              </p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
             )}
           </div>
           <div className={`p-3 rounded-2xl ${color} flex-shrink-0`}>
@@ -940,9 +887,7 @@ const AdsManagement: React.FC = () => {
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Ads Management
-                </h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Ads Management</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Manage and moderate advertising campaigns
                 </p>
@@ -956,9 +901,7 @@ const AdsManagement: React.FC = () => {
                     <input
                       type="text"
                       value={filters.search || ""}
-                      onChange={(e) =>
-                        handleFilterChange("search", e.target.value)
-                      }
+                      onChange={(e) => handleFilterChange("search", e.target.value)}
                       placeholder="Search ads..."
                       className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -970,9 +913,7 @@ const AdsManagement: React.FC = () => {
                     className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
                     <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Filter
-                    </span>
+                    <span className="text-gray-700 dark:text-gray-300">Filter</span>
                   </button>
                 </div>
               )}
@@ -990,14 +931,10 @@ const AdsManagement: React.FC = () => {
                   >
                     {/* Status Filter */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Status
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                       <select
                         value={filters.status || ""}
-                        onChange={(e) =>
-                          handleFilterChange("status", e.target.value)
-                        }
+                        onChange={(e) => handleFilterChange("status", e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                       >
                         <option value="">All Statuses</option>
@@ -1018,9 +955,7 @@ const AdsManagement: React.FC = () => {
                       <input
                         type="date"
                         value={filters.start_date || ""}
-                        onChange={(e) =>
-                          handleFilterChange("start_date", e.target.value)
-                        }
+                        onChange={(e) => handleFilterChange("start_date", e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                       />
                     </div>
@@ -1032,9 +967,7 @@ const AdsManagement: React.FC = () => {
                       <input
                         type="date"
                         value={filters.end_date || ""}
-                        onChange={(e) =>
-                          handleFilterChange("end_date", e.target.value)
-                        }
+                        onChange={(e) => handleFilterChange("end_date", e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                       />
                     </div>
@@ -1106,18 +1039,11 @@ const AdsManagement: React.FC = () => {
           </div>
 
           {/* Pagination */}
-          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-            {renderPagination()}
-          </div>
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">{renderPagination()}</div>
         </motion.div>
       </div>
 
-      {selectedViewAd && (
-        <ViewPost
-          post={convertAdToPost(selectedViewAd)}
-          onClose={() => setSelectedViewAd(null)}
-        />
-      )}
+      {selectedViewAd && <ViewPost post={convertAdToPost(selectedViewAd)} onClose={() => setSelectedViewAd(null)} />}
     </AdminLayout>
   );
 };

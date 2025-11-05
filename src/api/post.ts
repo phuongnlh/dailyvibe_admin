@@ -41,7 +41,7 @@ export interface PostReport {
   reason: string;
   description?: string;
   status: string;
-  actionTaken?: string;
+  actionTaken: string;
   createdAt: string;
   reporter: {
     _id: string;
@@ -49,6 +49,7 @@ export interface PostReport {
     avatar_url: string;
     email: string;
   };
+  resolvedAt: string;
 }
 
 export interface PostsWithReportsQuery {

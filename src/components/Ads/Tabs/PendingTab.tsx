@@ -1,18 +1,6 @@
-import React, { type JSX, useState } from "react";
-import {
-  AlertTriangle,
-  Eye,
-  FileText,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  Search,
-  Flag,
-  Target,
-  TrendingUp,
-} from "lucide-react";
 import { AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp, ChevronsUpDown, Eye, FileText, Flag, Search, Trash2, TrendingUp } from "lucide-react";
+import React, { useState } from "react";
 import type { AdsPostReportItem } from "../../../api/ads";
 import ExpandedAdsPostReports from "../ExpandedAdReports";
 
@@ -53,7 +41,6 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
   sortOrder = "desc",
   onSort,
   setSelectedViewPost,
-  formatCurrency,
   formatNumber,
   onBanUser,
 }) => {
@@ -113,9 +100,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
     const config = severityConfig[severity?.toLowerCase() || "none"];
 
     return (
-      <span
-        className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full ${config.bg}`}
-      >
+      <span className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full ${config.bg}`}>
         {config.text}
       </span>
     );
@@ -146,9 +131,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
     return (
       <div className="text-center py-12">
         <Search className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-          No pending reports
-        </h3>
+        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No pending reports</h3>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           There are no pending reports for posts with active ads.
         </p>
@@ -161,9 +144,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
       {selectedPosts && selectedPosts.length > 0 && onBulkMarkInvestigating && (
         <div className="px-6 py-4 bg-purple-50 dark:bg-purple-900/20 border-b border-purple-200 dark:border-purple-800">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-purple-700 dark:text-purple-300">
-              {selectedPosts.length} post(s) selected
-            </p>
+            <p className="text-sm text-purple-700 dark:text-purple-300">{selectedPosts.length} post(s) selected</p>
             <button
               onClick={() => onBulkMarkInvestigating(selectedPosts)}
               className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
@@ -182,10 +163,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                 <th className="px-4 py-3 text-left">
                   <input
                     type="checkbox"
-                    checked={
-                      selectedPosts.length === postReports.length &&
-                      postReports.length > 0
-                    }
+                    checked={selectedPosts.length === postReports.length && postReports.length > 0}
                     onChange={handleSelectAll}
                     className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
                   />
@@ -210,9 +188,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
               <th
                 onClick={() => onSort && onSort("reportCount")}
                 className={`px-4 py-3 text-left ${
-                  onSort
-                    ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                    : ""
+                  onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
                 }`}
                 style={{ minWidth: "100px" }}
               >
@@ -235,9 +211,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
               <th
                 onClick={() => onSort && onSort("severity")}
                 className={`px-4 py-3 text-left ${
-                  onSort
-                    ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                    : ""
+                  onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
                 }`}
                 style={{ minWidth: "110px" }}
               >
@@ -262,10 +236,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
             {postReports.map((item) => {
               const primaryAd = item.ads.length > 0 ? item.ads[0] : null;
               const progressPercentage = primaryAd
-                ? Math.min(
-                    (primaryAd.current_views / primaryAd.target_views) * 100,
-                    100
-                  )
+                ? Math.min((primaryAd.current_views / primaryAd.target_views) * 100, 100)
                 : 0;
 
               return (
@@ -290,17 +261,11 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                           {item.post.media && item.post.media.length > 0 ? (
                             <div className="relative">
                               {item.post.media[0].type === "video" && (
-                                <video
-                                  src={item.post.media[0].url}
-                                  className="w-10 h-10 rounded-lg object-cover"
-                                />
+                                <video src={item.post.media[0].url} className="w-10 h-10 rounded-lg object-cover" />
                               )}
                               {item.post.media[0].type === "image" && (
                                 <img
-                                  src={
-                                    item.post.media[0].thumbnail ||
-                                    item.post.media[0].url
-                                  }
+                                  src={item.post.media[0].thumbnail || item.post.media[0].url}
                                   alt="Post media"
                                   className="w-10 h-10 rounded-lg object-cover"
                                   loading="lazy"
@@ -341,9 +306,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                           </div>
 
                           {/* Post type */}
-                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                            {item.post.type} post
-                          </p>
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{item.post.type} post</p>
                         </div>
 
                         {/* Expand icon */}
@@ -366,8 +329,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                         <div className="flex flex-col space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <span className="text-gray-600 dark:text-gray-400">
-                              {formatNumber(primaryAd.current_views)} /{" "}
-                              {formatNumber(primaryAd.target_views)}
+                              {formatNumber(primaryAd.current_views)} / {formatNumber(primaryAd.target_views)}
                             </span>
                             <span className="font-semibold text-purple-600 dark:text-purple-400">
                               {progressPercentage.toFixed(0)}%
@@ -385,9 +347,7 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                           </div>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 dark:text-gray-500">
-                          No active ads
-                        </span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">No active ads</span>
                       )}
                     </td>
 
@@ -419,18 +379,14 @@ export const PendingAdsTab: React.FC<PendingAdsTabProps> = ({
                     </td>
 
                     {/* Severity */}
-                    <td className="px-4 py-3">
-                      {getSeverityBadge(item.post.severity)}
-                    </td>
+                    <td className="px-4 py-3">{getSeverityBadge(item.post.severity)}</td>
 
                     {/* Actions */}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center space-x-1">
                         {setSelectedViewPost && (
                           <button
-                            onClick={() =>
-                              setSelectedViewPost(convertToViewablePost(item))
-                            }
+                            onClick={() => setSelectedViewPost(convertToViewablePost(item))}
                             className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition-colors"
                             title="View Post"
                           >

@@ -1,44 +1,30 @@
-import React, { useState, useEffect } from "react";
-import {
-  Eye,
-  ChevronDown,
-  ChevronUp,
-  CheckCircle,
-  XCircle,
-  Shield,
-  AlertTriangle,
-  Calendar,
-} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import type { 
-  ResolvedGroupReportItem, 
-  GetResolvedReportsParams,
-  ResolvedReportsPagination,
-  ResolvedReportsStatistics
-} from "../../../api/group";
-import { getResolvedGroupReports } from "../../../api/group";
+import { AlertTriangle, Calendar, CheckCircle, ChevronDown, ChevronUp, Eye, Shield, XCircle } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import type { ResolvedGroupReportItem, ResolvedReportsStatistics } from "../../../api/group";
+import { getResolvedGroupReports } from "../../../api/group";
 
 interface ResolvedGroupsProps {
   onRefresh?: () => void;
 }
 
-const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
+const ResolvedGroups: React.FC<ResolvedGroupsProps> = () => {
   const [groupReports, setGroupReports] = useState<ResolvedGroupReportItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
-  const [params, setParams] = useState<GetResolvedReportsParams>({
-    page: 1,
-    limit: 10,
-    sortBy: "resolvedDate",
-    order: "desc",
-  });
-  const [pagination, setPagination] = useState<ResolvedReportsPagination>({
-    currentPage: 1,
-    totalPages: 1,
-    totalGroups: 0,
-    limit: 10,
-  });
+  // const [params, setParams] = useState<GetResolvedReportsParams>({
+  //   page: 1,
+  //   limit: 10,
+  //   sortBy: "resolvedDate",
+  //   order: "desc",
+  // });
+  // const [pagination, setPagination] = useState<ResolvedReportsPagination>({
+  //   currentPage: 1,
+  //   totalPages: 1,
+  //   totalGroups: 0,
+  //   limit: 10,
+  // });
   const [statistics, setStatistics] = useState<ResolvedReportsStatistics>({
     totalResolvedReports: 0,
     totalDismissedReports: 0,
@@ -49,12 +35,17 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
   const fetchResolvedReports = async () => {
     try {
       setLoading(true);
-      const response = await getResolvedGroupReports(params);
+      const response = await getResolvedGroupReports({
+        page: 1,
+        limit: 10,
+        sortBy: "resolvedDate",
+        order: "desc",
+      });
       console.log("Fetched resolved reports:", response.data.data.groupReports);
 
       if (response.data.success) {
         setGroupReports(response.data.data.groupReports);
-        setPagination(response.data.data.pagination);
+        // setPagination(response.data.data.pagination);
         setStatistics(response.data.data.statistics);
       }
     } catch (error) {
@@ -67,7 +58,7 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
 
   useEffect(() => {
     fetchResolvedReports();
-  }, [params]);
+  }, []);
 
   const toggleGroupExpansion = (groupId: string) => {
     const newExpanded = new Set(expandedGroups);
@@ -145,27 +136,19 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
         <div className="grid grid-cols-4 gap-4">
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">Total Resolved</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {statistics.totalResolvedReports}
-            </p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{statistics.totalResolvedReports}</p>
           </div>
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">Dismissed</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {statistics.totalDismissedReports}
-            </p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{statistics.totalDismissedReports}</p>
           </div>
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">With Action</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {statistics.totalResolvedWithAction}
-            </p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{statistics.totalResolvedWithAction}</p>
           </div>
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">Total Groups</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {statistics.totalGroups}
-            </p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{statistics.totalGroups}</p>
           </div>
         </div>
       </div>
@@ -199,7 +182,6 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            
             {groupReports.map((item) => (
               <React.Fragment key={item.groupId}>
                 <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -249,9 +231,7 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
-                        <span className="text-xs text-gray-600 dark:text-gray-400">
-                          Resolved: {item.resolvedCount}
-                        </span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">Resolved: {item.resolvedCount}</span>
                       </div>
                     </div>
                   </td>
@@ -331,9 +311,7 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
 
                           {/* Timeline */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                              Timeline
-                            </h4>
+                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Timeline</h4>
                             <div className="space-y-2">
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
                                 <span className="w-32 font-medium">First Report:</span>
@@ -383,9 +361,7 @@ const ResolvedGroups: React.FC<ResolvedGroupsProps> = ({ onRefresh }) => {
                                       {formatDate(report.resolvedAt)}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                    {report.reason}
-                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{report.reason}</p>
                                   <div className="flex items-center space-x-2">
                                     <img
                                       src={report.reporter.avatar_url}

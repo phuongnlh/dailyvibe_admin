@@ -1,36 +1,18 @@
-import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Eye,
+  Calendar,
+  CheckCircle,
   ChevronDown,
   ChevronUp,
-  CheckCircle,
-  XCircle,
-  Shield,
-  Calendar,
-  Image as ImageIcon,
-  Video,
+  Eye,
   FileText,
+  Image as ImageIcon,
+  Shield,
+  Video,
+  XCircle,
 } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
 import type { ResolvedPostReportItem } from "../../../api/post";
-
-interface Reporter {
-  _id: string;
-  email: string;
-  fullName: string;
-  avatar_url: string;
-}
-
-interface PostReport {
-  _id: string;
-  reportType: string;
-  reason: string;
-  status: string;
-  actionTaken: string;
-  reporter: Reporter;
-  createdAt: string;
-  resolvedAt: string;
-}
 
 interface PostUser {
   _id: string;
@@ -68,10 +50,6 @@ interface ResolvedTabProps {
 
 export const ResolvedTab: React.FC<ResolvedTabProps> = ({
   postReports,
-  onRefresh,
-  sortBy = "",
-  sortOrder = "desc",
-  onSort,
 }) => {
   const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
 
@@ -101,15 +79,10 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
       <div className="flex-shrink-0">
         {firstMedia.type === "video" && (
           <div className="relative">
-            <video
-              src={firstMedia.url}
-              className="w-12 h-12 object-cover rounded-lg"
-            />
+            <video src={firstMedia.url} className="w-12 h-12 object-cover rounded-lg" />
             {hasMore && (
               <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
-                <span className="text-xs text-white">
-                  +{post.media.length - 1}
-                </span>
+                <span className="text-xs text-white">+{post.media.length - 1}</span>
               </div>
             )}
           </div>
@@ -124,9 +97,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
             />
             {hasMore && (
               <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
-                <span className="text-xs text-white">
-                  +{post.media.length - 1}
-                </span>
+                <span className="text-xs text-white">+{post.media.length - 1}</span>
               </div>
             )}
           </div>
@@ -137,9 +108,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
 
   const getResolutionStatus = (item: ResolvedPostReportItem) => {
     const hasContentRemoved = item.contentRemovedCount > 0;
-    const hasUserBanned = item.reports.some(
-      (report) => report.actionTaken === "user_banned"
-    );
+    const hasUserBanned = item.reports.some((report) => report.actionTaken === "user_banned");
 
     if (hasContentRemoved && hasUserBanned) {
       return (
@@ -183,18 +152,15 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
 
     const severityColors = {
       low: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
-      medium:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
+      medium: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
       high: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
-      critical:
-        "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
+      critical: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
     };
 
     return (
       <span
         className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${
-          severityColors[severity as keyof typeof severityColors] ||
-          severityColors.low
+          severityColors[severity as keyof typeof severityColors] || severityColors.low
         }`}
       >
         <Shield className="w-3 h-3 mr-1" />
@@ -216,12 +182,9 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
   const getActionBadge = (actionTaken: string) => {
     const actionColors: Record<string, string> = {
       none: "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300",
-      content_removed:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
-      user_banned:
-        "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
-      warning_sent:
-        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
+      content_removed: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
+      user_banned: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
+      warning_sent: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
     };
 
     return (
@@ -266,9 +229,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
     return (
       <div className="text-center py-12">
         <CheckCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-500 dark:text-gray-400">
-          No resolved reports found
-        </p>
+        <p className="text-gray-500 dark:text-gray-400">No resolved reports found</p>
       </div>
     );
   }
@@ -342,9 +303,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {item.post.user_id.fullName}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          @{item.post.user_id.username}
-                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">@{item.post.user_id.username}</p>
                       </div>
                     </div>
                   </td>
@@ -378,9 +337,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
                       </div>
                       <div className="flex items-center space-x-2">
                         <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
-                        <span className="text-xs text-gray-600 dark:text-gray-400">
-                          Resolved: {item.resolvedCount}
-                        </span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">Resolved: {item.resolvedCount}</span>
                       </div>
                     </div>
                   </td>
@@ -403,9 +360,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
                   </td>
 
                   {/* Status */}
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    {getResolutionStatus(item)}
-                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">{getResolutionStatus(item)}</td>
 
                   {/* Actions */}
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -439,44 +394,31 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
                               Report Type Breakdown
                             </h4>
                             <div className="flex flex-wrap gap-2">
-                              {Object.entries(item.reportTypeCount).map(
-                                ([type, count]) => (
-                                  <span
-                                    key={type}
-                                    className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                                  >
-                                    {type.replace("_", " ")}:{" "}
-                                    <span className="ml-1 font-semibold">
-                                      {count}
-                                    </span>
-                                  </span>
-                                )
-                              )}
+                              {Object.entries(item.reportTypeCount).map(([type, count]) => (
+                                <span
+                                  key={type}
+                                  className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                >
+                                  {type.replace("_", " ")}: <span className="ml-1 font-semibold">{count}</span>
+                                </span>
+                              ))}
                             </div>
                           </div>
 
                           {/* Timeline */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                              Timeline
-                            </h4>
+                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Timeline</h4>
                             <div className="space-y-2">
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  First Report:
-                                </span>
+                                <span className="w-32 font-medium">First Report:</span>
                                 <span>{formatDate(item.oldestReportDate)}</span>
                               </div>
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  Latest Report:
-                                </span>
+                                <span className="w-32 font-medium">Latest Report:</span>
                                 <span>{formatDate(item.latestReportDate)}</span>
                               </div>
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  Resolved:
-                                </span>
+                                <span className="w-32 font-medium">Resolved:</span>
                                 <span>{formatDate(item.resolvedDate)}</span>
                               </div>
                             </div>
@@ -515,9 +457,7 @@ export const ResolvedTab: React.FC<ResolvedTabProps> = ({
                                       {formatDate(report.resolvedAt)}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                    {report.reason}
-                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{report.reason}</p>
                                   <div className="flex items-center space-x-2">
                                     <img
                                       src={report.reporter.avatar_url}

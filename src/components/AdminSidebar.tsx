@@ -4,7 +4,6 @@ import {
   ChevronLeft,
   ChevronRight,
   FileText,
-  Flag,
   Home,
   LogOut,
   Moon,

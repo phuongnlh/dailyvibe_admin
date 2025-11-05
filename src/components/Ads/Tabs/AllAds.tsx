@@ -21,7 +21,7 @@ import type { Ad } from "../../../api/ads";
 
 interface AllAdsTabProps {
   ads: Ad[];
-  handleAdAction: (id: string, action: string) => void;
+  handleAdAction: (id: string, action: "delete" | "pause" | "resume" | "approve" | "reject") => void;
   setSelectedViewAd: (ad: Ad) => void;
   formatDate: (date: string) => string;
   formatCurrency: (amount: number, currency?: string) => string;

@@ -1,19 +1,16 @@
-import React, { type JSX, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import {
   AlertTriangle,
-  Clock,
-  Eye,
-  FileText,
-  Image,
-  Video,
-  Trash2,
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
-  Search,
+  Clock,
+  Eye,
+  FileText,
+  Trash2,
   Unlock,
 } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import React, { type JSX, useState } from "react";
 import type { PostReportItem } from "../../../api/post";
 import ExpandedPostReports from "../ExpandedPostReports";
 
@@ -87,18 +84,14 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
     <th
       onClick={() => onSort && onSort(field)}
       className={`px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${
-        onSort
-          ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-          : ""
+        onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
       }`}
     >
       <div className="flex items-center justify-start">
         <div>
           <div className="text-left">{label}</div>
           {subtitle && (
-            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">
-              {subtitle}
-            </div>
+            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">{subtitle}</div>
           )}
         </div>
         {onSort && renderSortIcon(field)}
@@ -118,18 +111,15 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
   const getSeverityBadge = (severity: string) => {
     const severityConfig: Record<string, { color: string; label: string }> = {
       low: {
-        color:
-          "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300",
+        color: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300",
         label: "Low",
       },
       medium: {
-        color:
-          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
+        color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
         label: "Medium",
       },
       high: {
-        color:
-          "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
+        color: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
         label: "High",
       },
       critical: {
@@ -140,11 +130,7 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
 
     const config = severityConfig[severity] || severityConfig.low;
     return (
-      <span
-        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${config.color}`}
-      >
-        {config.label}
-      </span>
+      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${config.color}`}>{config.label}</span>
     );
   };
 
@@ -158,10 +144,7 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
       <div className="flex-shrink-0">
         {firstMedia.type === "video" && (
           <div className="relative">
-            <video
-              src={firstMedia.url}
-              className="w-12 h-12 object-cover rounded-lg"
-            />
+            <video src={firstMedia.url} className="w-12 h-12 object-cover rounded-lg" />
             {hasMore && (
               <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
                 <span className="text-xs text-white">+{media.length - 1}</span>
@@ -197,12 +180,8 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
     return (
       <div className="text-center py-12">
         <Clock className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-          No pending reports
-        </h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          There are currently no reports pending review.
-        </p>
+        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No pending reports</h3>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">There are currently no reports pending review.</p>
       </div>
     );
   }
@@ -236,10 +215,7 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
                 <th className="px-6 py-3 text-left">
                   <input
                     type="checkbox"
-                    checked={
-                      selectedPosts.length === postReports.length &&
-                      postReports.length > 0
-                    }
+                    checked={selectedPosts.length === postReports.length && postReports.length > 0}
                     onChange={onSelectAll}
                     className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
                   />
@@ -251,24 +227,12 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
                 Author
               </th>
-              <SortableHeader
-                field="reportCount"
-                label="Reports"
-                subtitle="Total reports"
-              />
+              <SortableHeader field="reportCount" label="Reports" subtitle="Total reports" />
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Report Types
               </th>
-              <SortableHeader
-                field="severity"
-                label="Severity"
-                subtitle="Risk level"
-              />
-              <SortableHeader
-                field="createdAt"
-                label="Date"
-                subtitle="Post date"
-              />
+              <SortableHeader field="severity" label="Severity" subtitle="Risk level" />
+              <SortableHeader field="createdAt" label="Date" subtitle="Post date" />
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
@@ -327,9 +291,7 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {item.post.user_id.fullName}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          @{item.post.user_id.username}
-                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">@{item.post.user_id.username}</p>
                       </div>
                     </div>
                   </td>
@@ -356,13 +318,9 @@ export const PendingTab: React.FC<PendingPostsTabProps> = ({
                       )}
                     </div>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{getSeverityBadge(item.post.severity || "low")}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {getSeverityBadge(item.post.severity || "low")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white">
-                      {formatDate(item.post.createdAt)}
-                    </div>
+                    <div className="text-sm text-gray-900 dark:text-white">{formatDate(item.post.createdAt)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex items-center space-x-2">

@@ -1,16 +1,5 @@
+import { Eye, FileText, Heart, Megaphone, MessageCircle, Share2, Shield, Trash2, Unlock } from "lucide-react";
 import React, { type JSX } from "react";
-import {
-  AlertTriangle,
-  Eye,
-  FileText,
-  Heart,
-  MessageCircle,
-  Share2,
-  Trash2,
-  Unlock,
-  Megaphone,
-  Shield,
-} from "lucide-react";
 
 interface Post {
   _id: string;
@@ -43,7 +32,7 @@ interface Post {
 
 interface AllPostsTabProps {
   posts: Post[];
-  handlePostAction: (id: string, action: string) => void;
+  handlePostAction: (postId: string, action: 'delete' | 'restore') => void;
   setSelectedViewPost: (post: Post) => void;
   getTypeIcon: (type: string) => JSX.Element;
   formatDate: (date: string) => string;
@@ -173,9 +162,7 @@ export const AllPostsTab: React.FC<AllPostsTabProps> = ({
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">
-                    {post.content}
-                  </p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">{post.content}</p>
                   <div className="flex items-center mt-1 space-x-2 flex-wrap">
                     {getTypeIcon(post.type)}
                     <span className="text-xs text-gray-500 capitalize">{post.type}</span>
@@ -229,9 +216,7 @@ export const AllPostsTab: React.FC<AllPostsTabProps> = ({
                     {post.pendingReportCount}/{post.reportCount}
                   </span>
                 ) : (
-                  <span className="text-gray-500">
-                    0/{post.reportCount}
-                  </span>
+                  <span className="text-gray-500">0/{post.reportCount}</span>
                 )}
               </div>
             </td>

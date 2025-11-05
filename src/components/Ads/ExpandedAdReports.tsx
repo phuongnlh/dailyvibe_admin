@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Flag, Clock, XCircle, AlertTriangle, Ban } from "lucide-react";
+import { AlertTriangle, Ban, Clock, Flag, XCircle } from "lucide-react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 import type { AdReport } from "../../api/ads";
 
@@ -28,7 +28,6 @@ const ExpandedAdsPostReports: React.FC<ExpandedAdsPostReportsProps> = ({
   reportTypeCount,
   postId,
   postAuthorId,
-  ads,
   onDismissAll,
   onMarkInvestigating,
   onBanUser,
@@ -153,10 +152,6 @@ const ExpandedAdsPostReports: React.FC<ExpandedAdsPostReportsProps> = ({
     });
   };
 
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat("en-US").format(num);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, height: 0 }}
@@ -270,12 +265,8 @@ const ExpandedAdsPostReports: React.FC<ExpandedAdsPostReportsProps> = ({
                         className="w-8 h-8 rounded-full"
                       />
                       <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {report.reporter.fullName}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {report.reporter.email}
-                        </p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{report.reporter.fullName}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{report.reporter.email}</p>
                       </div>
                     </div>
 

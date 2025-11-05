@@ -1,27 +1,20 @@
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  Trash2,
-  UserCheck,
-  Users,
-} from "lucide-react";
-import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Search, Trash2, UserCheck, Users } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import AdminLayout from "../components/AdminLayout";
-import AllGroups from "../components/Group/Tabs/AllGroups";
 import {
-  getAllGroups,
-  getPendingGroupReports,
-  getGroupStatistics,
-  markGroupAsInvestigating,
   dismissAllPendingReportsOfGroup,
+  getAllGroups,
+  getGroupStatistics,
+  getPendingGroupReports,
+  markGroupAsInvestigating,
   sendWarningToGroup,
   type GetGroupsParams,
   type GetPendingReportsParams,
   type SendWarningRequest,
 } from "../api/group";
+import AdminLayout from "../components/AdminLayout";
+import AllGroups from "../components/Group/Tabs/AllGroups";
 import PendingGroups from "../components/Group/Tabs/PendingGroups";
 import ResolvedGroups from "../components/Group/Tabs/ResolvedGroups";
 
@@ -40,12 +33,8 @@ const GroupManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [selectedPendingGroups, setSelectedPendingGroups] = useState<string[]>(
-    []
-  );
-  const [activeTab, setActiveTab] = useState<
-    "all" | "pending" | "investigating" | "resolved"
-  >("all");
+  const [selectedPendingGroups, setSelectedPendingGroups] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"all" | "pending" | "investigating" | "resolved">("all");
 
   const [statistics, setStatistics] = useState<Statistics>({
     totalActiveGroups: 0,
@@ -77,10 +66,10 @@ const GroupManagement: React.FC = () => {
     totalReportedGroups: 0,
     limit: 10,
   });
-  const [pendingStatistics, setPendingStatistics] = useState({
-    totalPendingReports: 0,
-    totalReportedGroups: 0,
-  });
+  // const [pendingStatistics, setPendingStatistics] = useState({
+  //   totalPendingReports: 0,
+  //   totalReportedGroups: 0,
+  // });
 
   const [pendingParams, setPendingParams] = useState<GetPendingReportsParams>({
     page: 1,
@@ -214,7 +203,7 @@ const GroupManagement: React.FC = () => {
           limit: paginationData.limit,
         });
 
-        setPendingStatistics(response.data.data.statistics);
+        // setPendingStatistics(response.data.data.statistics);
       }
     } catch (error) {
       console.error("Error fetching pending reports:", error);
@@ -243,7 +232,15 @@ const GroupManagement: React.FC = () => {
     if (activeTab === "pending" || activeTab === "investigating") {
       fetchPendingReports();
     }
-  }, [pendingParams.page, pendingParams.type, pendingParams.limit, pendingParams.search, pendingParams.sortBy, pendingParams.order, activeTab]);
+  }, [
+    pendingParams.page,
+    pendingParams.type,
+    pendingParams.limit,
+    pendingParams.search,
+    pendingParams.sortBy,
+    pendingParams.order,
+    activeTab,
+  ]);
 
   const fetchGroupStatistics = async () => {
     try {
@@ -268,8 +265,7 @@ const GroupManagement: React.FC = () => {
 
   const handleSort = (field: string) => {
     setParams((prev) => {
-      const newOrder =
-        prev.sortBy === field && prev.order === "desc" ? "asc" : "desc";
+      const newOrder = prev.sortBy === field && prev.order === "desc" ? "asc" : "desc";
       return {
         ...prev,
         sortBy: field,
@@ -281,8 +277,7 @@ const GroupManagement: React.FC = () => {
 
   const handlePendingSort = (field: string) => {
     setPendingParams((prev) => {
-      const newOrder =
-        prev.sortBy === field && prev.order === "desc" ? "asc" : "desc";
+      const newOrder = prev.sortBy === field && prev.order === "desc" ? "asc" : "desc";
       return {
         ...prev,
         sortBy: field,
@@ -310,9 +305,7 @@ const GroupManagement: React.FC = () => {
 
   const handleSelectPendingGroup = (groupId: string) => {
     setSelectedPendingGroups((prev) =>
-      prev.includes(groupId)
-        ? prev.filter((id) => id !== groupId)
-        : [...prev, groupId]
+      prev.includes(groupId) ? prev.filter((id) => id !== groupId) : [...prev, groupId]
     );
   };
 
@@ -364,18 +357,11 @@ const GroupManagement: React.FC = () => {
             text: `${successCount} group(s) marked as investigating${
               failureCount > 0 ? `, ${failureCount} failed` : ""
             }`,
-            icon:
-              successCount === selectedPendingGroups.length
-                ? "success"
-                : "warning",
+            icon: successCount === selectedPendingGroups.length ? "success" : "warning",
           });
 
           // Refresh data
-          await Promise.all([
-            fetchPendingReports(),
-            fetchGroupStatistics(),
-            fetchGroups(),
-          ]);
+          await Promise.all([fetchPendingReports(), fetchGroupStatistics(), fetchGroups()]);
           setSelectedPendingGroups([]);
         } else {
           Swal.fire("Error", "Failed to mark groups as investigating", "error");
@@ -417,11 +403,7 @@ const GroupManagement: React.FC = () => {
           });
 
           // Refresh data
-          await Promise.all([
-            fetchPendingReports(),
-            fetchGroupStatistics(),
-            fetchGroups(),
-          ]);
+          await Promise.all([fetchPendingReports(), fetchGroupStatistics(), fetchGroups()]);
           setSelectedPendingGroups([]);
         }
       }
@@ -438,9 +420,7 @@ const GroupManagement: React.FC = () => {
     }
   };
 
-  const handleSendWarning = async (
-    data: SendWarningRequest & { groupId: string }
-  ) => {
+  const handleSendWarning = async (data: SendWarningRequest & { groupId: string }) => {
     try {
       setLoading(true);
 
@@ -468,11 +448,7 @@ const GroupManagement: React.FC = () => {
         });
 
         // Refresh data
-        await Promise.all([
-          fetchPendingReports(),
-          fetchGroupStatistics(),
-          fetchGroups(),
-        ]);
+        await Promise.all([fetchPendingReports(), fetchGroupStatistics(), fetchGroups()]);
         setSelectedPendingGroups([]);
       }
     } catch (error: any) {
@@ -525,8 +501,7 @@ const GroupManagement: React.FC = () => {
     return (
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700 dark:text-gray-300">
-          Showing page {currentPage} of {totalPages} ({pagination.totalGroups}{" "}
-          total groups)
+          Showing page {currentPage} of {totalPages} ({pagination.totalGroups} total groups)
         </div>
         <div className="flex space-x-2">
           <button
@@ -592,8 +567,7 @@ const GroupManagement: React.FC = () => {
     return (
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700 dark:text-gray-300">
-          Showing page {currentPage} of {totalPages} (
-          {pendingPagination.totalReportedGroups} total groups)
+          Showing page {currentPage} of {totalPages} ({pendingPagination.totalReportedGroups} total groups)
         </div>
         <div className="flex space-x-2">
           <button
@@ -607,9 +581,7 @@ const GroupManagement: React.FC = () => {
           {pages.map((page, index) => (
             <button
               key={index}
-              onClick={() =>
-                typeof page === "number" && handlePendingPageChange(page)
-              }
+              onClick={() => typeof page === "number" && handlePendingPageChange(page)}
               disabled={page === "..."}
               className={`px-3 py-1 border rounded-lg transition-colors ${
                 page === currentPage
@@ -645,12 +617,8 @@ const GroupManagement: React.FC = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Total Groups
-                </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {statistics.totalActiveGroups}
-                </p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Groups</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{statistics.totalActiveGroups}</p>
               </div>
               <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-2xl">
                 <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
@@ -666,9 +634,7 @@ const GroupManagement: React.FC = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Total Posts
-                </p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Posts</p>
                 <p className="text-3xl font-bold text-gray-900 dark:text-white">
                   {statistics.totalPosts.toLocaleString()}
                 </p>
@@ -684,9 +650,7 @@ const GroupManagement: React.FC = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Total Members
-                </p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Members</p>
                 <p className="text-3xl font-bold text-gray-900 dark:text-white">
                   {statistics.totalMembers.toLocaleString()}
                 </p>
@@ -705,12 +669,8 @@ const GroupManagement: React.FC = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Deleted Groups
-                </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {statistics.totalDeletedGroups}
-                </p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Deleted Groups</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{statistics.totalDeletedGroups}</p>
               </div>
               <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-2xl">
                 <Trash2 className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -730,9 +690,7 @@ const GroupManagement: React.FC = () => {
           {/* Search Bar */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                All Groups
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">All Groups</h2>
             </div>
 
             {/* Search Input */}
@@ -744,11 +702,7 @@ const GroupManagement: React.FC = () => {
                     type="text"
                     value={activeTab === "all" ? searchInput : pendingSearchInput}
                     onChange={activeTab === "all" ? handleSearchChange : handlePendingSearchChange}
-                    placeholder={
-                      activeTab === "all" 
-                        ? "Search groups by name..." 
-                        : "Search pending groups by name..."
-                    }
+                    placeholder={activeTab === "all" ? "Search groups by name..." : "Search pending groups by name..."}
                     className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
@@ -827,8 +781,8 @@ const GroupManagement: React.FC = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
             </div>
           ) : activeTab === "all" ? (
-            <AllGroups 
-              groups={groups} 
+            <AllGroups
+              groups={groups}
               onRefresh={fetchGroups}
               sortBy={params.sortBy || "created_at"}
               sortOrder={params.order || "desc"}
@@ -861,32 +815,27 @@ const GroupManagement: React.FC = () => {
             <ResolvedGroups onRefresh={fetchGroups} />
           ) : (
             <div className="flex justify-center items-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">
-                This tab is under development
-              </p>
+              <p className="text-gray-500 dark:text-gray-400">This tab is under development</p>
             </div>
           )}
 
           {/* Pagination */}
           {activeTab === "all" && !loading && (
-            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-              {renderPagination()}
-            </div>
+            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">{renderPagination()}</div>
           )}
 
           {/* Pending Pagination */}
-          {(activeTab === "pending" || activeTab === "investigating") &&
-            !loading && (
-              <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-                {pendingReports.length > 0 ? (
-                  renderPendingPagination()
-                ) : (
-                  <div className="text-center text-sm text-gray-500 dark:text-gray-400 py-4">
-                    No {activeTab} groups found
-                  </div>
-                )}
-              </div>
-            )}
+          {(activeTab === "pending" || activeTab === "investigating") && !loading && (
+            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+              {pendingReports.length > 0 ? (
+                renderPendingPagination()
+              ) : (
+                <div className="text-center text-sm text-gray-500 dark:text-gray-400 py-4">
+                  No {activeTab} groups found
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
       </div>
     </AdminLayout>

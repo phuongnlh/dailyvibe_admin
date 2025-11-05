@@ -1,17 +1,7 @@
+import { AlertTriangle, ChevronDown, ChevronsUpDown, ChevronUp, Eye, Shield, Trash2 } from "lucide-react";
 import React, { useState } from "react";
-import {
-  Eye,
-  Globe,
-  Lock,
-  AlertTriangle,
-  Shield,
-  Trash2,
-  ChevronUp,
-  ChevronDown,
-  ChevronsUpDown,
-} from "lucide-react";
-import GroupPostsModal from "../Modal/GroupPostsModal";
 import DeleteGroupModal from "../Modal/DeleteGroupModal";
+import GroupPostsModal from "../Modal/GroupPostsModal";
 
 interface Group {
   _id: string;
@@ -48,21 +38,9 @@ interface AllGroupsProps {
   onSort: (field: string) => void;
 }
 
-type SortableField =
-  | "membersCount"
-  | "postsCount"
-  | "reportCount"
-  | "warningCount"
-  | "severity"
-  | "status";
+type SortableField = "membersCount" | "postsCount" | "reportCount" | "warningCount" | "severity" | "status";
 
-const AllGroups: React.FC<AllGroupsProps> = ({
-  groups,
-  onRefresh,
-  sortBy,
-  sortOrder,
-  onSort,
-}) => {
+const AllGroups: React.FC<AllGroupsProps> = ({ groups, onRefresh, sortBy, sortOrder, onSort }) => {
   // State for modals
   const [isPostsModalOpen, setIsPostsModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -87,35 +65,20 @@ const AllGroups: React.FC<AllGroupsProps> = ({
     }
   };
 
-  const getPrivacyIcon = (privacy: string) => {
-    switch (privacy) {
-      case "Public":
-        return <Globe className="w-4 h-4" />;
-      case "Private":
-      case "Secret":
-        return <Lock className="w-4 h-4" />;
-      default:
-        return <Globe className="w-4 h-4" />;
-    }
-  };
-
   const getSeverityBadge = (severity?: string) => {
     if (!severity) return null;
 
     const severityColors = {
       low: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300",
-      medium:
-        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
+      medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
       high: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
-      critical:
-        "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
+      critical: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
     };
 
     return (
       <span
         className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${
-          severityColors[severity as keyof typeof severityColors] ||
-          severityColors.low
+          severityColors[severity as keyof typeof severityColors] || severityColors.low
         }`}
       >
         <Shield className="w-3 h-3 mr-1" />
@@ -129,8 +92,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({
 
     const statusConfig = {
       active: {
-        color:
-          "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300",
+        color: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300",
         label: "Active",
       },
       deleted: {
@@ -138,32 +100,23 @@ const AllGroups: React.FC<AllGroupsProps> = ({
         label: "Deleted",
       },
       investigating: {
-        color:
-          "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300",
+        color: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300",
         label: "Investigating",
       },
       pending: {
-        color:
-          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
+        color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
         label: "Pending",
       },
       resolved: {
-        color:
-          "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300",
+        color: "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300",
         label: "Resolved",
       },
     };
 
-    const config =
-      statusConfig[groupStatus as keyof typeof statusConfig] ||
-      statusConfig.active;
+    const config = statusConfig[groupStatus as keyof typeof statusConfig] || statusConfig.active;
 
     return (
-      <span
-        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${config.color}`}
-      >
-        {config.label}
-      </span>
+      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${config.color}`}>{config.label}</span>
     );
   };
 
@@ -201,9 +154,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({
         <div>
           <div className="text-left">{label}</div>
           {subtitle && (
-            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">
-              {subtitle}
-            </div>
+            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">{subtitle}</div>
           )}
         </div>
         {renderSortIcon(field)}
@@ -228,16 +179,8 @@ const AllGroups: React.FC<AllGroupsProps> = ({
               {/* Sortable columns */}
               <SortableHeader field="membersCount" label="Members" />
               <SortableHeader field="postsCount" label="Posts" />
-              <SortableHeader
-                field="reportCount"
-                label="Reports"
-                subtitle="Pending / Total"
-              />
-              <SortableHeader
-                field="warningCount"
-                label="Warnings"
-                subtitle="Current / Max"
-              />
+              <SortableHeader field="reportCount" label="Reports" subtitle="Pending / Total" />
+              <SortableHeader field="warningCount" label="Warnings" subtitle="Current / Max" />
               <SortableHeader field="severity" label="Severity" />
               <SortableHeader field="status" label="Status" />
 
@@ -252,25 +195,14 @@ const AllGroups: React.FC<AllGroupsProps> = ({
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {groups.map((group) => (
-              <tr
-                key={group._id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
+              <tr key={group._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 {/* Group Info */}
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <img
-                      src={group.avatar_url}
-                      alt={group.name}
-                      className="w-10 h-10 rounded-lg object-cover"
-                    />
+                    <img src={group.avatar_url} alt={group.name} className="w-10 h-10 rounded-lg object-cover" />
                     <div className="ml-3 max-w-[150px]">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                        {group.name}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                        {group.description}
-                      </div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white truncate">{group.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{group.description}</div>
                     </div>
                   </div>
                 </td>
@@ -287,18 +219,14 @@ const AllGroups: React.FC<AllGroupsProps> = ({
                       <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {group.admin.fullName}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                        {group.admin.email}
-                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{group.admin.email}</p>
                     </div>
                   </div>
                 </td>
 
                 {/* Members */}
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900 dark:text-white">
-                    {group.membersCount.toLocaleString()}
-                  </div>
+                  <div className="text-sm text-gray-900 dark:text-white">{group.membersCount.toLocaleString()}</div>
                 </td>
 
                 {/* Posts */}
@@ -322,9 +250,7 @@ const AllGroups: React.FC<AllGroupsProps> = ({
                 {/* Warnings */}
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-1">
-                    {(group.warningCount ?? 0) > 3 && (
-                      <AlertTriangle className="w-4 h-4 text-red-500" />
-                    )}
+                    {(group.warningCount ?? 0) > 3 && <AlertTriangle className="w-4 h-4 text-red-500" />}
                     <span
                       className={`text-sm font-medium ${
                         (group.warningCount ?? 0) > 3
@@ -339,17 +265,11 @@ const AllGroups: React.FC<AllGroupsProps> = ({
 
                 {/* Severity */}
                 <td className="px-4 py-4 whitespace-nowrap">
-                  {group.severity ? (
-                    getSeverityBadge(group.severity)
-                  ) : (
-                    <span className="text-gray-400 text-sm">-</span>
-                  )}
+                  {group.severity ? getSeverityBadge(group.severity) : <span className="text-gray-400 text-sm">-</span>}
                 </td>
 
                 {/* Status */}
-                <td className="px-4 py-4 whitespace-nowrap">
-                  {getStatusBadge(group.status)}
-                </td>
+                <td className="px-4 py-4 whitespace-nowrap">{getStatusBadge(group.status)}</td>
 
                 {/* Created */}
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">

@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Activity,
-  Eye,
-  FileText,
-  MessageSquare,
-  DollarSign,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { Activity, Eye, FileText, MessageSquare, TrendingUp, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   Area,
@@ -18,7 +10,6 @@ import {
   Cell,
   Legend,
   Line,
-  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -26,13 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  getDailyInteractions,
-  getPostStats,
-  getStatsData,
-  getUserGrowth,
-  getPaymentAnalytics,
-} from "../api/admin";
+import { getDailyInteractions, getPaymentAnalytics, getPostStats, getStatsData, getUserGrowth } from "../api/admin";
 import AdminLayout from "../components/AdminLayout";
 
 interface StatCardProps {
@@ -42,12 +27,7 @@ interface StatCardProps {
   color: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({
-  title,
-  value,
-  icon: Icon,
-  color,
-}) => {
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, color }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -56,9 +36,7 @@ const StatCard: React.FC<StatCardProps> = ({
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            {title}
-          </p>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{title}</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {typeof value === "number" ? value.toLocaleString() : value}
           </p>
@@ -116,12 +94,12 @@ export default function Dashboard() {
   ]);
 
   const [paymentPeriod, setPaymentPeriod] = useState<"7" | "30" | "90">("30");
-  const [paymentStats, setPaymentStats] = useState({
-    totalVND: 0,
-    totalUSD: 0,
-    totalTransactions: 0,
-    avgPerDay: 0,
-  });
+  // const [paymentStats, setPaymentStats] = useState({
+  //   totalVND: 0,
+  //   totalUSD: 0,
+  //   totalTransactions: 0,
+  //   avgPerDay: 0,
+  // });
 
   useEffect(() => {
     const getStats = async () => {
@@ -138,25 +116,16 @@ export default function Dashboard() {
       setPaymentAnalyticsData(paymentAnalytics.data);
 
       // Tính tổng stats
-      const totalVND = paymentAnalytics.data.reduce(
-        (sum: number, item: any) => sum + item.vnd,
-        0
-      );
-      const totalUSD = paymentAnalytics.data.reduce(
-        (sum: number, item: any) => sum + item.usd,
-        0
-      );
-      const totalTransactions = paymentAnalytics.data.reduce(
-        (sum: number, item: any) => sum + item.transactions,
-        0
-      );
+      // const totalVND = paymentAnalytics.data.reduce((sum: number, item: any) => sum + item.vnd, 0);
+      // const totalUSD = paymentAnalytics.data.reduce((sum: number, item: any) => sum + item.usd, 0);
+      // const totalTransactions = paymentAnalytics.data.reduce((sum: number, item: any) => sum + item.transactions, 0);
 
-      setPaymentStats({
-        totalVND,
-        totalUSD,
-        totalTransactions,
-        avgPerDay: Math.round(totalTransactions / parseInt(paymentPeriod)),
-      });
+      // setPaymentStats({
+      //   totalVND,
+      //   totalUSD,
+      //   totalTransactions,
+      //   avgPerDay: Math.round(totalTransactions / parseInt(paymentPeriod)),
+      // });
     };
     getStats();
   }, [paymentPeriod]);
@@ -203,14 +172,10 @@ export default function Dashboard() {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                User Growth
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">User Growth</h2>
               <div className="flex items-center space-x-2">
                 <Activity className="w-5 h-5 text-purple-500" />
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Last 6 months
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Last 6 months</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={350}>
@@ -221,16 +186,8 @@ export default function Dashboard() {
                     <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
-                <XAxis
-                  dataKey="month"
-                  stroke="#6B7280"
-                  tick={{ fill: "#6B7280" }}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                <XAxis dataKey="month" stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <YAxis stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <Tooltip
                   contentStyle={{
@@ -250,13 +207,7 @@ export default function Dashboard() {
                   fill="url(#userGradient)"
                   name="Total Users"
                 />
-                <Line
-                  type="monotone"
-                  dataKey="newUsers"
-                  stroke="#06B6D4"
-                  strokeWidth={2}
-                  name="New Users"
-                />
+                <Line type="monotone" dataKey="newUsers" stroke="#06B6D4" strokeWidth={2} name="New Users" />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
@@ -335,23 +286,13 @@ export default function Dashboard() {
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Daily Interactions
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Daily Interactions</h2>
               <TrendingUp className="w-5 h-5 text-blue-500" />
             </div>
             <ResponsiveContainer width="100%" height={350}>
               <BarChart data={[...dailyInteractionsData].reverse()}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
-                <XAxis
-                  dataKey="day"
-                  stroke="#6B7280"
-                  tick={{ fill: "#6B7280" }}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                <XAxis dataKey="day" stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <YAxis stroke="#6B7280" tick={{ fill: "#6B7280" }} />
                 <Tooltip
                   contentStyle={{
@@ -362,24 +303,9 @@ export default function Dashboard() {
                   }}
                 />
                 <Legend />
-                <Bar
-                  dataKey="reactions"
-                  fill="#EF4444"
-                  name="Reactions"
-                  radius={[2, 2, 0, 0]}
-                />
-                <Bar
-                  dataKey="comments"
-                  fill="#10B981"
-                  name="Comments"
-                  radius={[2, 2, 0, 0]}
-                />
-                <Bar
-                  dataKey="shares"
-                  fill="#F59E0B"
-                  name="Shares"
-                  radius={[2, 2, 0, 0]}
-                />
+                <Bar dataKey="reactions" fill="#EF4444" name="Reactions" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="comments" fill="#10B981" name="Comments" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="shares" fill="#F59E0B" name="Shares" radius={[2, 2, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </motion.div>
@@ -393,15 +319,11 @@ export default function Dashboard() {
             {/* Header with Period Selector */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Payment Revenue
-                </h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Payment Revenue</h2>
               </div>
               <select
                 value={paymentPeriod}
-                onChange={(e) =>
-                  setPaymentPeriod(e.target.value as "7" | "30" | "90")
-                }
+                onChange={(e) => setPaymentPeriod(e.target.value as "7" | "30" | "90")}
                 className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-3 py-2 border-none outline-none cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 <option value="7">Last 7 days</option>
@@ -412,15 +334,11 @@ export default function Dashboard() {
 
             {/* Chart with increased height */}
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart 
+              <BarChart
                 data={paymentAnalyticsData}
                 margin={{ top: 10, right: 30, left: 20, bottom: paymentPeriod === "90" ? 60 : 20 }}
               >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#374151"
-                  opacity={0.3}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
                 <XAxis
                   dataKey="day"
                   stroke="#6B7280"
@@ -438,11 +356,10 @@ export default function Dashboard() {
                     angle: -90,
                     position: "insideLeft",
                     fill: "#10B981",
-                    style: { fontWeight: 600 }
+                    style: { fontWeight: 600 },
                   }}
                   tickFormatter={(value) => {
-                    if (value >= 1000000)
-                      return `${(value / 1000000).toFixed(1)}M`;
+                    if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
                     if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
                     return value;
                   }}
@@ -457,7 +374,7 @@ export default function Dashboard() {
                     angle: 90,
                     position: "insideRight",
                     fill: "#3B82F6",
-                    style: { fontWeight: 600 }
+                    style: { fontWeight: 600 },
                   }}
                   tickFormatter={(value) => `$${value}`}
                 />
@@ -468,14 +385,11 @@ export default function Dashboard() {
                     borderRadius: "12px",
                     color: "#F9FAFB",
                     padding: "12px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                   }}
                   formatter={(value: any, name: string) => {
                     if (name === "VND Revenue") {
-                      return [
-                        new Intl.NumberFormat("vi-VN").format(value) + " đ",
-                        name,
-                      ];
+                      return [new Intl.NumberFormat("vi-VN").format(value) + " đ", name];
                     }
                     if (name === "USD Revenue") {
                       return [
@@ -488,15 +402,15 @@ export default function Dashboard() {
                     }
                     return [value, name];
                   }}
-                  labelStyle={{ 
+                  labelStyle={{
                     color: "#9CA3AF",
                     fontWeight: 600,
-                    marginBottom: "4px"
+                    marginBottom: "4px",
                   }}
                 />
-                <Legend 
+                <Legend
                   wrapperStyle={{
-                    paddingTop: "20px"
+                    paddingTop: "20px",
                   }}
                   iconType="circle"
                 />

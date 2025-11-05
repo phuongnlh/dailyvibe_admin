@@ -208,6 +208,7 @@ export interface AdsPostReportItem {
     current_views: number;
     started_at?: string;
     completed_at?: string;
+    total_interactions: number;
   }>;
   reportCount: number;
   reportTypes: string[];
@@ -376,8 +377,8 @@ export interface AdReportStatsResponse {
   message: string;
   data: {
     totalAds: number;
-    TotalPending: number;
-    TotalInvestigating: number;
+    totalPending: number;
+    totalInvestigating: number;
   };
 }
 

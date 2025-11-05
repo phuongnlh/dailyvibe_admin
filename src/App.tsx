@@ -9,7 +9,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import AdminLogin from "./pages/AdminLogin";
 import AdminSettings from "./pages/AdminSettings";
 import AdsManagement from "./pages/AdsManagement";
-import Analytics from "./pages/Analytics";
 import GroupManagement from "./pages/GroupManagement";
 import Dashboard from "./pages/Home.admin";
 import PostsManagement from "./pages/PostsManagement";
@@ -38,16 +37,6 @@ function AppContent() {
             element={
               <PrivateAdminRoute>
                 <Dashboard />
-              </PrivateAdminRoute>
-            }
-          />
-
-          {/* Analytics */}
-          <Route
-            path="/analytics"
-            element={
-              <PrivateAdminRoute>
-                <Analytics />
               </PrivateAdminRoute>
             }
           />

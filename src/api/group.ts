@@ -24,7 +24,7 @@ export interface Group {
   pendingReportCount: number;
   severity?: string;
   status?: string;
-  warningCount?: number;
+  warningCount: number;
   warnings?: any[];
 }
 

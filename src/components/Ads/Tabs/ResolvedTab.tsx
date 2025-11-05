@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import {
-  Eye,
-  ChevronDown,
-  ChevronUp,
-  CheckCircle,
-  XCircle,
-  Shield,
-  Calendar,
-  FileText,
-  ChevronsUpDown,
-} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import type { ResolvedAdsPostReportItem, AdReport } from "../../../api/ads";
+import {
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  Eye,
+  FileText,
+  Shield,
+  XCircle,
+} from "lucide-react";
+import React, { useState } from "react";
+import type { ResolvedAdsPostReportItem } from "../../../api/ads";
 
 interface ResolvedAdsTabProps {
   postReports: ResolvedAdsPostReportItem[];
@@ -28,13 +28,10 @@ type SortableField = "reportCount" | "resolvedDate" | "severity";
 
 export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
   postReports,
-  onRefresh,
   sortBy = "",
   sortOrder = "desc",
   onSort,
   setSelectedViewPost,
-  formatCurrency,
-  formatNumber,
 }) => {
   const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
 
@@ -67,18 +64,14 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
     <th
       onClick={() => onSort && onSort(field)}
       className={`px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${
-        onSort
-          ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-          : ""
+        onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
       }`}
     >
       <div className="flex items-center justify-start">
         <div>
           <div className="text-left">{label}</div>
           {subtitle && (
-            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">
-              {subtitle}
-            </div>
+            <div className="text-[10px] font-normal text-gray-400 normal-case mt-0.5 text-left">{subtitle}</div>
           )}
         </div>
         {onSort && renderSortIcon(field)}
@@ -102,15 +95,10 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
       <div className="flex-shrink-0">
         {firstMedia.type === "video" && (
           <div className="relative">
-            <video
-              src={firstMedia.url}
-              className="w-12 h-12 object-cover rounded-lg"
-            />
+            <video src={firstMedia.url} className="w-12 h-12 object-cover rounded-lg" />
             {hasMore && (
               <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
-                <span className="text-xs text-white">
-                  +{post.media.length - 1}
-                </span>
+                <span className="text-xs text-white">+{post.media.length - 1}</span>
               </div>
             )}
           </div>
@@ -125,9 +113,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
             />
             {hasMore && (
               <div className="absolute top-0 right-0 bg-black bg-opacity-50 w-full h-full rounded-lg flex items-center justify-center">
-                <span className="text-xs text-white">
-                  +{post.media.length - 1}
-                </span>
+                <span className="text-xs text-white">+{post.media.length - 1}</span>
               </div>
             )}
           </div>
@@ -138,9 +124,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
 
   const getResolutionStatus = (item: ResolvedAdsPostReportItem) => {
     const hasContentRemoved = item.contentRemovedCount > 0;
-    const hasUserBanned = item.reports.some(
-      (report) => report.actionTaken === "user_banned"
-    );
+    const hasUserBanned = item.reports.some((report) => report.actionTaken === "user_banned");
 
     if (hasContentRemoved && hasUserBanned) {
       return (
@@ -184,18 +168,15 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
 
     const severityColors = {
       low: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
-      medium:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
+      medium: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
       high: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
-      critical:
-        "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
+      critical: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
     };
 
     return (
       <span
         className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${
-          severityColors[severity as keyof typeof severityColors] ||
-          severityColors.low
+          severityColors[severity as keyof typeof severityColors] || severityColors.low
         }`}
       >
         <Shield className="w-3 h-3 mr-1" />
@@ -238,12 +219,9 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
   const getActionBadge = (actionTaken: string) => {
     const actionColors: Record<string, string> = {
       none: "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300",
-      content_removed:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
-      user_banned:
-        "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
-      warning_sent:
-        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
+      content_removed: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300",
+      user_banned: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300",
+      warning_sent: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300",
     };
 
     return (
@@ -261,9 +239,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
     return (
       <div className="text-center py-12">
         <CheckCircle className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-          No resolved reports
-        </h3>
+        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No resolved reports</h3>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           There are no resolved reports for posts with active ads yet.
         </p>
@@ -283,21 +259,9 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Author
               </th>
-              <SortableHeader
-                field="reportCount"
-                label="Reports"
-                subtitle="Total count"
-              />
-              <SortableHeader
-                field="resolvedDate"
-                label="Resolved"
-                subtitle="Date resolved"
-              />
-              <SortableHeader
-                field="severity"
-                label="Severity"
-                subtitle="Risk level"
-              />
+              <SortableHeader field="reportCount" label="Reports" subtitle="Total count" />
+              <SortableHeader field="resolvedDate" label="Resolved" subtitle="Date resolved" />
+              <SortableHeader field="severity" label="Severity" subtitle="Risk level" />
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Status
               </th>
@@ -321,9 +285,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
                         <p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">
                           {item.post.content}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {item.post.type} post
-                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.post.type} post</p>
                       </div>
                       {expandedPosts.has(item.postId) ? (
                         <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
@@ -345,9 +307,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {item.post.user_id.fullName}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          @{item.post.user_id.username}
-                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">@{item.post.user_id.username}</p>
                       </div>
                     </div>
                   </td>
@@ -391,9 +351,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
                   </td>
 
                   {/* Status */}
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    {getResolutionStatus(item)}
-                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">{getResolutionStatus(item)}</td>
 
                   {/* Actions */}
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -429,44 +387,31 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
                               Report Type Breakdown
                             </h4>
                             <div className="flex flex-wrap gap-2">
-                              {Object.entries(item.reportTypeCount).map(
-                                ([type, count]) => (
-                                  <span
-                                    key={type}
-                                    className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                                  >
-                                    {type.replace("_", " ")}:{" "}
-                                    <span className="ml-1 font-semibold">
-                                      {count}
-                                    </span>
-                                  </span>
-                                )
-                              )}
+                              {Object.entries(item.reportTypeCount).map(([type, count]) => (
+                                <span
+                                  key={type}
+                                  className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                >
+                                  {type.replace("_", " ")}: <span className="ml-1 font-semibold">{count}</span>
+                                </span>
+                              ))}
                             </div>
                           </div>
 
                           {/* Timeline */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                              Timeline
-                            </h4>
+                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Timeline</h4>
                             <div className="space-y-2">
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  First Report:
-                                </span>
+                                <span className="w-32 font-medium">First Report:</span>
                                 <span>{formatDate(item.oldestReportDate)}</span>
                               </div>
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  Latest Report:
-                                </span>
+                                <span className="w-32 font-medium">Latest Report:</span>
                                 <span>{formatDate(item.latestReportDate)}</span>
                               </div>
                               <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                                <span className="w-32 font-medium">
-                                  Resolved:
-                                </span>
+                                <span className="w-32 font-medium">Resolved:</span>
                                 <span>{formatDate(item.resolvedDate)}</span>
                               </div>
                             </div>
@@ -505,9 +450,7 @@ export const ResolvedAdsTab: React.FC<ResolvedAdsTabProps> = ({
                                       {formatDate(report.resolvedAt || report.createdAt)}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                    {report.reason}
-                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{report.reason}</p>
                                   <div className="flex items-center space-x-2">
                                     <img
                                       src={report.reporter.avatar_url}

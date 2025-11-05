@@ -1,16 +1,6 @@
-import React, { type JSX, useState } from "react";
-import {
-  Eye,
-  FileText,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  Search,
-  Flag,
-  TrendingUp,
-} from "lucide-react";
 import { AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp, ChevronsUpDown, Eye, FileText, Flag, Search, Trash2, TrendingUp } from "lucide-react";
+import React, { useState } from "react";
 import type { AdsPostReportItem } from "../../../api/ads";
 import ExpandedAdsPostReports from "../ExpandedAdReports";
 
@@ -44,7 +34,6 @@ export const InvestigatingAdsTab: React.FC<InvestigatingAdsTabProps> = ({
   sortOrder = "desc",
   onSort,
   setSelectedViewPost,
-  formatCurrency,
   formatNumber,
   onBanUser,
 }) => {
@@ -72,10 +61,7 @@ export const InvestigatingAdsTab: React.FC<InvestigatingAdsTabProps> = ({
   };
 
   const getSeverityBadge = (severity?: string) => {
-    const severityConfig: Record<
-      string,
-      { bg: string; text: string;}
-    > = {
+    const severityConfig: Record<string, { bg: string; text: string }> = {
       critical: {
         bg: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300",
         text: "Critical",
@@ -101,9 +87,7 @@ export const InvestigatingAdsTab: React.FC<InvestigatingAdsTabProps> = ({
     const config = severityConfig[severity?.toLowerCase() || "none"];
 
     return (
-      <span
-        className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full ${config.bg}`}
-      >
+      <span className={`inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full ${config.bg}`}>
         {config.text}
       </span>
     );
@@ -134,9 +118,7 @@ export const InvestigatingAdsTab: React.FC<InvestigatingAdsTabProps> = ({
     return (
       <div className="text-center py-12">
         <Search className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-          No posts under investigation
-        </h3>
+        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No posts under investigation</h3>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           There are currently no reports being investigated for posts with active ads.
         </p>
@@ -144,7 +126,7 @@ export const InvestigatingAdsTab: React.FC<InvestigatingAdsTabProps> = ({
     );
   }
 
-return (
+  return (
     <>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -168,9 +150,7 @@ return (
               <th
                 onClick={() => onSort && onSort("reportCount")}
                 className={`px-4 py-3 text-left ${
-                  onSort
-                    ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                    : ""
+                  onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
                 }`}
                 style={{ minWidth: "100px" }}
               >
@@ -193,9 +173,7 @@ return (
               <th
                 onClick={() => onSort && onSort("severity")}
                 className={`px-4 py-3 text-left ${
-                  onSort
-                    ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                    : ""
+                  onSort ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" : ""
                 }`}
                 style={{ minWidth: "110px" }}
               >
@@ -227,10 +205,7 @@ return (
             {postReports.map((item) => {
               const primaryAd = item.ads.length > 0 ? item.ads[0] : null;
               const progressPercentage = primaryAd
-                ? Math.min(
-                    (primaryAd.current_views / primaryAd.target_views) * 100,
-                    100
-                  )
+                ? Math.min((primaryAd.current_views / primaryAd.target_views) * 100, 100)
                 : 0;
 
               return (
@@ -244,17 +219,11 @@ return (
                           {item.post.media && item.post.media.length > 0 ? (
                             <div className="relative">
                               {item.post.media[0].type === "video" && (
-                                <video
-                                  src={item.post.media[0].url}
-                                  className="w-10 h-10 rounded-lg object-cover"
-                                />
+                                <video src={item.post.media[0].url} className="w-10 h-10 rounded-lg object-cover" />
                               )}
                               {item.post.media[0].type === "image" && (
                                 <img
-                                  src={
-                                    item.post.media[0].thumbnail ||
-                                    item.post.media[0].url
-                                  }
+                                  src={item.post.media[0].thumbnail || item.post.media[0].url}
                                   alt="Post media"
                                   className="w-10 h-10 rounded-lg object-cover"
                                   loading="lazy"
@@ -295,9 +264,7 @@ return (
                           </div>
 
                           {/* Post type */}
-                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                            {item.post.type} post
-                          </p>
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{item.post.type} post</p>
                         </div>
 
                         {/* Expand icon */}
@@ -320,8 +287,7 @@ return (
                         <div className="flex flex-col space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
                             <span className="text-gray-600 dark:text-gray-400">
-                              {formatNumber(primaryAd.current_views)} /{" "}
-                              {formatNumber(primaryAd.target_views)}
+                              {formatNumber(primaryAd.current_views)} / {formatNumber(primaryAd.target_views)}
                             </span>
                             <span className="font-semibold text-purple-600 dark:text-purple-400">
                               {progressPercentage.toFixed(0)}%
@@ -335,15 +301,11 @@ return (
                           </div>
                           <div className="flex items-center space-x-1 text-xs text-gray-500">
                             <TrendingUp className="w-3 h-3" />
-                            <span>
-                              {formatNumber(primaryAd.total_interactions)}
-                            </span>
+                            <span>{formatNumber(primaryAd.total_interactions)}</span>
                           </div>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 dark:text-gray-500">
-                          No active ads
-                        </span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">No active ads</span>
                       )}
                     </td>
 
@@ -375,9 +337,7 @@ return (
                     </td>
 
                     {/* Severity */}
-                    <td className="px-4 py-3">
-                      {getSeverityBadge(item.post.severity)}
-                    </td>
+                    <td className="px-4 py-3">{getSeverityBadge(item.post.severity)}</td>
 
                     {/* Status */}
                     <td className="px-4 py-3">
@@ -391,9 +351,7 @@ return (
                       <div className="flex items-center justify-center space-x-1">
                         {setSelectedViewPost && (
                           <button
-                            onClick={() =>
-                              setSelectedViewPost(convertToViewablePost(item))
-                            }
+                            onClick={() => setSelectedViewPost(convertToViewablePost(item))}
                             className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition-colors"
                             title="View Post"
                           >
