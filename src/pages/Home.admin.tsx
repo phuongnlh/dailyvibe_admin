@@ -106,6 +106,8 @@ export default function Dashboard() {
     getStats();
   }, []);
 
+  const filteredData = postData.filter((item) => item.value > 0);
+
   return (
     <AdminLayout title="Dashboard">
       <div className="space-y-6">
@@ -205,37 +207,47 @@ export default function Dashboard() {
             </div>
 
             {/* Chart */}
+
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
                 <Pie
-                  data={postData}
+                  data={filteredData.length > 0 ? filteredData : [{ name: "No Data", value: 1 }]} // dữ liệu giả khi trống
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
                   cy="50%"
                   outerRadius={120}
                   innerRadius={70}
-                  paddingAngle={3}
-                  cornerRadius={8}
-                  label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  paddingAngle={filteredData.length > 0 ? 3 : 0}
+                  cornerRadius={filteredData.length > 0 ? 8 : 0}
                   labelLine={false}
+                  label={({ name, percent }: any) =>
+                    filteredData.length > 0 ? `${name}: ${(percent * 100).toFixed(0)}%` : ""
+                  }
                 >
-                  {postData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} stroke="none" />
+                  {(filteredData.length > 0 ? filteredData : [{ color: "#E5E7EB" }]).map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={filteredData.length > 0 ? entry.color : "#E5E7EB"} // màu xám nhạt
+                      stroke="none"
+                    />
                   ))}
                 </Pie>
-                <Tooltip
-                  formatter={(value, name) => [`${value}`, name]}
-                  contentStyle={{
-                    backgroundColor: "#1F2937",
-                    border: "none",
-                    borderRadius: "8px",
-                    color: "#F9FAFB",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                  }}
-                  labelStyle={{ color: "#9CA3AF" }}
-                  itemStyle={{ color: "#F9FAFB" }}
-                />
+
+                {filteredData.length > 0 && (
+                  <Tooltip
+                    formatter={(value, name) => [`${value}`, name]}
+                    contentStyle={{
+                      backgroundColor: "#1F2937",
+                      border: "none",
+                      borderRadius: "8px",
+                      color: "#F9FAFB",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                    }}
+                    labelStyle={{ color: "#9CA3AF" }}
+                    itemStyle={{ color: "#F9FAFB" }}
+                  />
+                )}
               </PieChart>
             </ResponsiveContainer>
           </motion.div>
