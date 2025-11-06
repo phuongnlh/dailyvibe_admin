@@ -4,6 +4,7 @@ import { ChevronDown, Save, ShieldCheck, ShieldOff, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Swal from "sweetalert2";
+import { updateUserData } from "../api/admin";
 import { VIETNAM_PROVINCES } from "../constants/vietnamProvinces";
 
 interface User {
@@ -93,9 +94,26 @@ export default function UserInformation({
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        if (onSave) onSave(formData);
-        setIsEditing(false);
-        Swal.fire("Saved!", "The user information has been updated.", "success");
+        if (JSON.stringify(formData) !== JSON.stringify(user)) {
+          try {
+            const res = await updateUserData(user._id, {
+              fullName: formData.fullName,
+              username: formData.username,
+              email: formData.email,
+              gender: formData.gender,
+              location: formData.location,
+              bio: formData.bio,
+              twoFAEnabled: formData.twoFAEnabled,
+            });
+
+            if (res?.status !== 200) throw new Error("Update failed");
+            Swal.fire("Saved!", "The user information has been updated.", "success");
+            setIsEditing(false);
+            onSave?.(formData);
+          } catch (err) {
+            Swal.fire("Error", "Failed to update user information.", "error");
+          }
+        }
       }
     });
   };

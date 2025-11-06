@@ -62,6 +62,21 @@ export async function deleteUser(userId: string) {
   return api.delete(`/users/${userId}`);
 }
 
+export async function updateUserData(
+  userId: string,
+  data: {
+    fullName?: string;
+    username?: string;
+    email?: string;
+    gender?: string;
+    location?: string;
+    bio?: string;
+    twoFAEnabled?: boolean;
+  }
+) {
+  return api.put(`/users/${userId}`, data);
+}
+
 export async function getTopPosters(limit = 10, period = "30d") {
   return api.get(`/top-posters`, { params: { limit, period } });
 }
