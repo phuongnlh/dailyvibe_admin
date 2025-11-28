@@ -65,18 +65,17 @@ const AdminSettings: React.FC = () => {
       handleAvatarUpload(file, type);
     }
   };
+  const fetchTemplates = async () => {
+    try {
+      const res = await api.get("/email-templates");
+      setTemplates(res.data.data || res.data);
+    } catch (error) {
+      console.error("Error fetching templates:", error);
+      Swal.fire("Error", "Failed to load email templates", "error");
+    }
+  };
 
   useEffect(() => {
-    const fetchTemplates = async () => {
-      try {
-        const res = await api.get("/email-templates");
-        setTemplates(res.data.data || res.data);
-      } catch (error) {
-        console.error("Error fetching templates:", error);
-        Swal.fire("Error", "Failed to load email templates", "error");
-      }
-    };
-
     fetchTemplates();
   }, []);
 
@@ -182,7 +181,7 @@ const AdminSettings: React.FC = () => {
     </div>
   );
 
-  const renderEmailSettings = () => <EmailTemplateForm selected={selected} />;
+  const renderEmailSettings = () => <EmailTemplateForm selected={selected} onclose={() => fetchTemplates()} />;
 
   const renderTabContent = () => {
     switch (selectedTab) {
@@ -197,7 +196,7 @@ const AdminSettings: React.FC = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (isDropdownOpen && !event.target.closest(".relative")) {
         setIsDropdownOpen(false);
       }

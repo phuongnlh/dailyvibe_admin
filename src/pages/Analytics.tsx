@@ -1,35 +1,33 @@
-import React from "react";
-import AdminLayout from "../components/AdminLayout";
 import { motion } from "framer-motion";
 import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  AreaChart,
+  Clock,
+  Eye,
+  Globe,
+  Monitor,
+  MousePointer,
+  Smartphone,
+  Tablet,
+  TrendingDown,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import React from "react";
+import {
   Area,
-  BarChart,
-  Bar,
+  AreaChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
-import {
-  TrendingUp,
-  TrendingDown,
-  Users,
-  Eye,
-  MousePointer,
-  Clock,
-  Globe,
-  Smartphone,
-  Monitor,
-  Tablet,
-} from "lucide-react";
+import AdminLayout from "../components/AdminLayout";
 
 const Analytics: React.FC = () => {
   // Sample analytics data
@@ -211,7 +209,7 @@ const Analytics: React.FC = () => {
                   cy="50%"
                   outerRadius={120}
                   innerRadius={60}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {deviceData.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />

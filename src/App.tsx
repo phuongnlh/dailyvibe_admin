@@ -3,22 +3,21 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingScreen from "./components/Load/LoadingScreen";
-import { AppProvider } from "./contexts/AppContext";
+import { MediaZoomModal } from "./components/MediaZoomModal";
+import { useApp } from "./contexts/AppContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AdminLogin from "./pages/AdminLogin";
 import AdminSettings from "./pages/AdminSettings";
 import AdsManagement from "./pages/AdsManagement";
-import Analytics from "./pages/Analytics";
-import CommentsManagement from "./pages/CommentsManagement";
 import GroupManagement from "./pages/GroupManagement";
 import Dashboard from "./pages/Home.admin";
 import PostsManagement from "./pages/PostsManagement";
-import ReportsManagement from "./pages/ReportsManagement";
 import UsersManagement from "./pages/UsersManagement";
 import PrivateAdminRoute from "./router/PrivateAdminRoute";
 import PublicAdminRoute from "./router/PublicAdminRoute";
 
 function AppContent() {
+  const { showMediaGallery, setShowMediaGallery, mediaGallery, currentMediaIndex } = useApp();
   return (
     <div className="h-full bg-gradient-to-br from-[#431c66] to-[#a83279]">
       <Router>
@@ -42,16 +41,6 @@ function AppContent() {
             }
           />
 
-          {/* Analytics */}
-          <Route
-            path="/analytics"
-            element={
-              <PrivateAdminRoute>
-                <Analytics />
-              </PrivateAdminRoute>
-            }
-          />
-
           {/* User Management */}
           <Route
             path="/users"
@@ -71,24 +60,8 @@ function AppContent() {
               </PrivateAdminRoute>
             }
           />
-          <Route
-            path="/comments"
-            element={
-              <PrivateAdminRoute>
-                <CommentsManagement />
-              </PrivateAdminRoute>
-            }
-          />
 
           {/* Moderation */}
-          <Route
-            path="/reports"
-            element={
-              <PrivateAdminRoute>
-                <ReportsManagement />
-              </PrivateAdminRoute>
-            }
-          />
           <Route
             path="/groups"
             element={
@@ -116,6 +89,21 @@ function AppContent() {
           />
         </Routes>
       </Router>
+
+      {/* Media Gallery Modal */}
+      {showMediaGallery && mediaGallery.length > 0 && (
+        <div
+          className="fixed inset-0 w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60] overflow-y-hidden"
+          onClick={() => setShowMediaGallery(false)}
+        >
+          <MediaZoomModal
+            media={mediaGallery[currentMediaIndex]}
+            showNavigation={mediaGallery.length > 1}
+            currentIndex={currentMediaIndex}
+            totalCount={mediaGallery.length}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -132,11 +120,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <AppProvider>
-      <ThemeProvider>{loading ? <LoadingScreen isFading={fade} /> : <AppContent />}</ThemeProvider>
-    </AppProvider>
-  );
+  return <ThemeProvider>{loading ? <LoadingScreen isFading={fade} /> : <AppContent />}</ThemeProvider>;
 }
 
 export default App;

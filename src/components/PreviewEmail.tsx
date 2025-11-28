@@ -3,7 +3,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import api from "../api/axios";
 
-const EmailPreviewModal = ({ form, onClose }) => {
+const EmailPreviewModal = ({ form, onClose }: any) => {
   const [saveloading, setSaveLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState<"html" | "text">("html");
   const handleSave = async () => {
@@ -19,6 +19,7 @@ const EmailPreviewModal = ({ form, onClose }) => {
         });
         if (res.status === 200 || res.status === 201) {
           Swal.fire("Success", "Template saved successfully", "success");
+          onClose();
         }
       }
     } catch (error) {

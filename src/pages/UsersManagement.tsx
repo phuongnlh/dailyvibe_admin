@@ -134,7 +134,7 @@ const UsersManagement: React.FC = () => {
 
   const handleSort = (sortBy: string) => {
     const newSortOrder = filters.sortBy === sortBy && filters.sortOrder === "asc" ? "desc" : "asc";
-    setFilters((prev) => ({
+    setFilters((prev: any) => ({
       ...prev,
       sortBy,
       sortOrder: newSortOrder,

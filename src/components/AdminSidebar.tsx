@@ -4,14 +4,11 @@ import {
   ChevronLeft,
   ChevronRight,
   FileText,
-  Flag,
   Home,
   LogOut,
-  MessageSquare,
   Moon,
   Settings,
   Sun,
-  TrendingUp,
   User,
   Users,
 } from "lucide-react";
@@ -46,18 +43,6 @@ const menuItems = [
     icon: FileText,
     path: "/posts",
     color: "text-orange-600 dark:text-orange-400",
-  },
-  {
-    title: "Comments",
-    icon: MessageSquare,
-    path: "/comments",
-    color: "text-cyan-600 dark:text-cyan-400",
-  },
-  {
-    title: "Reports",
-    icon: Flag,
-    path: "/reports",
-    color: "text-red-600 dark:text-red-400",
   },
   {
     title: "Groups Management",

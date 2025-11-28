@@ -5,7 +5,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: `${API_BASE_URL}/api/v1/admin`,
-  headers: { "ngrok-skip-browser-warning": "true" },
   withCredentials: true,
 });
 

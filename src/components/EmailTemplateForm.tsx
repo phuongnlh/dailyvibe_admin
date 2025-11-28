@@ -8,7 +8,7 @@ interface EmailTemplate {
   html: string;
   text: string;
 }
-const EmailTemplateForm = ({ selected }: { selected: EmailTemplate | null }) => {
+const EmailTemplateForm = ({ selected, onclose }: { selected: EmailTemplate | null; onclose: () => void }) => {
   // Move hooks to the top, before any conditional logic
   const [form, setForm] = useState({ ...(selected || null) });
   const [showPreview, setShowPreview] = useState(false);
@@ -105,7 +105,15 @@ const EmailTemplateForm = ({ selected }: { selected: EmailTemplate | null }) => 
       </div>
 
       {/* Email Preview Modal */}
-      {showPreview && <EmailPreviewModal form={showPreviewForm} onClose={() => setShowPreview(false)} />}
+      {showPreview && (
+        <EmailPreviewModal
+          form={showPreviewForm}
+          onClose={() => {
+            setShowPreview(false);
+            onclose();
+          }}
+        />
+      )}
     </>
   );
 };
